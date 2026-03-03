@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+@import "tailwindcss";
+
 :root {
     --bg: #000000;
     --bg2: #06060e;
@@ -510,7 +512,6 @@ body {
     height: 420px;
 }
 
-/* Orbiting Rings */
 .orbit-ring {
     position: absolute;
     border: 1px solid rgba(59, 130, 246, 0.12);
@@ -552,7 +553,6 @@ body {
     }
 }
 
-/* Orbiting Dots */
 .orbit-dot {
     position: absolute;
     width: 8px;
@@ -587,7 +587,6 @@ body {
     box-shadow: 0 0 8px var(--warm);
 }
 
-/* Central Core */
 .orbit-core {
     position: absolute;
     top: 50%;
@@ -626,7 +625,6 @@ body {
     letter-spacing: 0.15em;
 }
 
-/* Floating Tags */
 .orbit-tag {
     position: absolute;
     font-family: var(--mono);
@@ -767,10 +765,6 @@ body {
     transform: scale(1.03);
     z-index: 2;
     box-shadow: 0 0 40px rgba(59, 130, 246, 0.08);
-}
-
-.stat-divider {
-    display: none;
 }
 
 .stat-num {
@@ -988,7 +982,6 @@ section {
     cursor: default;
 }
 
-/* Animated gradient border on hover */
 .venture-card::before {
     content: '';
     position: absolute;
@@ -1587,6 +1580,21 @@ section {
     color: var(--accent-bright);
 }
 
+/* ═══ CONTACT ICON ═══ */
+.contact-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 4px;
+    line-height: 1;
+    color: var(--accent-bright);
+    font-style: normal;
+    transition: transform 0.3s;
+}
+
+.contact-card:hover .contact-icon {
+    transform: scale(1.15);
+}
+
 /* ═══ FOOTER ═══ */
 .footer {
     border-top: 1px solid var(--border);
@@ -1597,6 +1605,16 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.footer-copy {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+}
+
+.footer-location {
     font-family: var(--mono);
     font-size: 0.6rem;
     color: var(--text-muted);
@@ -1624,21 +1642,6 @@ section {
 
 .footer-sep {
     color: var(--border);
-}
-
-/* ═══ CONTACT ICON ═══ */
-.contact-icon {
-    font-size: 1.6rem;
-    display: block;
-    margin-bottom: 4px;
-    line-height: 1;
-    color: var(--accent-bright);
-    font-style: normal;
-    transition: transform 0.3s;
-}
-
-.contact-card:hover .contact-icon {
-    transform: scale(1.15);
 }
 
 /* ═══ BACK TO TOP ═══ */
