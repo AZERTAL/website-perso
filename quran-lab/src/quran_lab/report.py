@@ -50,7 +50,7 @@ def render_variants(m: Multiverse) -> str:
     lines = ["| niveau | variantes fusionnées (forme: effectif) |", "|---|---|"]
     for c in m.cells:
         r = c.rules
-        if (r.basmala, r.muqattaat, r.compounds) == ("as_text", "include", "with_base") and (
+        if (r.basmala, r.muqattaat, r.compounds) == ("all_113", "include", "with_base") and (
             r.text in (None, "uthmani")
         ):
             v = ", ".join(f"{k}: {n}" for k, n in sorted(c.result.variants.items())) or "(aucune)"
@@ -113,6 +113,14 @@ def render_verification_report(
         "",
         "## Taux de coïncidence N5 (combien de types tombent exactement sur la cible)",
     ]
+    if m.not_evaluated:
+        body += [
+            "<!-- BEGIN generated:quran_lab.multiverse.not_evaluated -->",
+            "Niveaux NON ÉVALUÉS (morphologie non acquise, ce n'est pas un zéro) : "
+            + ", ".join(m.not_evaluated),
+            "<!-- END generated -->",
+            "",
+        ]
     for level, co in coincidences.items():
         body += [
             f"### {level}",

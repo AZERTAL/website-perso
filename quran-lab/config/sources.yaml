@@ -4,15 +4,17 @@ sources:
   - id: tanzil_uthmani
     dest: quran-uthmani.txt
     page: https://tanzil.net/download/
-    url: null
-    note: "Texte Uthmani, format sourate|verset|texte. Choisir les options sans marques de pause ni ajouts, et noter ici les options choisies."
-    license_note: "À lire sur la page officielle (attribution, texte non modifié). Non confirmée."
+    url: "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&tatweel=true&agree=true"
+    url_verified: true
+    note: "Tanzil v1.1 (février 2021). Options : SANS signes de pause, sajdah, rub-el-hizb ni tanweens séquentiels (une marque de pause séparée par un espace deviendrait un faux « mot ») ; AVEC tatwil (coche par défaut de la page). Format txt-2 : sourate|verset|texte."
+    license_note: "CC BY 3.0 (lu sur tanzil.net/docs/Text_License le 2026-10-13) : copie verbatim, modification interdite, attribution à Tanzil Project + lien tanzil.net, avis de copyright à reproduire dans les fichiers dérivés."
   - id: tanzil_simple_clean
     dest: quran-simple-clean.txt
     page: https://tanzil.net/download/
-    url: null
-    note: "Texte simple-clean, même format."
-    license_note: "Idem."
+    url: "https://tanzil.net/pub/download/index.php?quranType=simple-clean&outType=txt-2&tatweel=true&agree=true"
+    url_verified: true
+    note: "Tanzil v1.1, type Simple (Clean) : sans diacritiques ni symboles. Mêmes options que l'Uthmani."
+    license_note: "CC BY 3.0, voir tanzil_uthmani."
   - id: tanzil_metadata
     dest: quran-data.xml
     page: https://tanzil.net/docs/quran_metadata

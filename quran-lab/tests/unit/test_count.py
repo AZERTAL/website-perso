@@ -107,20 +107,35 @@ def test_muqattaat_include_exclude(corpus, cfg):
 
 
 # --- basmala ----------------------------------------------------------------
+# Tanzil préfixe la basmala au verset 1 des sourates 2-114 (sauf 9) : dans la fixture, 2:1 porte
+# 4 mots d'en-tête (header=True). Le corpus morphologique n'a que la basmala numérotée 1:1.
 
 
-def test_basmala_three_states(corpus, cfg):
-    # الله figure une fois en 1:1. as_text -> 1 ; none -> 0 ;
-    # all -> 1 + 112 en-têtes (sourates 2..114 sauf 9)
+def test_basmala_three_states_at_form_level(corpus, cfg):
+    # « الله » : 1:1:2 (basmala numérotée) + 2:1:2 (en-tête préfixé)
     kw = {"level": "form", "text": "uthmani"}
-    assert n("الله", corpus, cfg, basmala="as_text", **kw).n == 1
+    assert n("الله", corpus, cfg, basmala="all_113", **kw).n == 2
+    assert n("الله", corpus, cfg, basmala="numbered_only", **kw).occurrences == ((1, 1, 2),)
     assert n("الله", corpus, cfg, basmala="none", **kw).n == 0
-    assert n("الله", corpus, cfg, basmala="all", **kw).n == 113
 
 
-def test_basmala_all_counts_every_basmala_word(corpus, cfg):
-    # racine رحم : 2 mots en 1:1 -> 2 + 2*112
-    assert n("رحم", corpus, cfg, level="root", basmala="all").n == 226
+def test_basmala_all_113_adds_virtual_headers_below_form_level(corpus, cfg):
+    # racine رحم : 2 mots en 1:1. all_113 -> 2 + 2 x 112 copies virtuelles = 226
+    assert n("رحم", corpus, cfg, level="root", basmala="all_113").n == 226
+    assert n("رحم", corpus, cfg, level="root", basmala="numbered_only").n == 2
+    assert n("رحم", corpus, cfg, level="root", basmala="none").n == 0
+
+
+def test_virtual_headers_are_not_added_at_form_level(corpus, cfg):
+    # au niveau forme les en-têtes sont de vrais mots : aucune copie virtuelle (sinon double compte)
+    r = n("الله", corpus, cfg, level="form", text="simple", basmala="all_113")
+    assert not any(loc[1] == 0 for loc in r.occurrences)
+
+
+def test_excluding_muqattaat_never_removes_the_basmala_header(corpus, cfg):
+    kw = {"level": "form", "text": "uthmani", "basmala": "all_113"}
+    assert n("الله", corpus, cfg, muqattaat="exclude", **kw).n == 2  # l'en-tête de 2:1 reste
+    assert n("الم", corpus, cfg, muqattaat="exclude", **kw).n == 0
 
 
 def test_header_suras_are_112(corpus):

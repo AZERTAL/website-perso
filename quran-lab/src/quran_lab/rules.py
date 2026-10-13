@@ -10,13 +10,13 @@ from typing import Literal
 import yaml
 
 Level = Literal["form", "stem", "lemma", "root"]
-Basmala = Literal["as_text", "all", "none"]
+Basmala = Literal["all_113", "numbered_only", "none"]
 Muq = Literal["include", "exclude"]
 TextVariant = Literal["uthmani", "simple"]
 Compounds = Literal["with_base", "separate"]
 
 LEVELS: tuple[Level, ...] = ("form", "stem", "lemma", "root")
-BASMALA: tuple[Basmala, ...] = ("as_text", "all", "none")
+BASMALA: tuple[Basmala, ...] = ("all_113", "numbered_only", "none")
 MUQ: tuple[Muq, ...] = ("include", "exclude")
 TEXTS: tuple[TextVariant, ...] = ("uthmani", "simple")
 COMPOUNDS: tuple[Compounds, ...] = ("with_base", "separate")
@@ -27,7 +27,7 @@ class Rules:
     """Un point de l'espace des règles. `text` vaut None quand l'axe est sans objet (n/a)."""
 
     level: Level
-    basmala: Basmala = "as_text"
+    basmala: Basmala = "all_113"
     muqattaat: Muq = "include"
     text: TextVariant | None = None
     compounds: Compounds = "with_base"

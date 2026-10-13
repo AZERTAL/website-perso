@@ -21,6 +21,7 @@ class Multiverse:
     query: str
     target: int | None
     cells: tuple[Cell, ...]
+    not_evaluated: tuple[str, ...] = ()  # niveaux impossibles faute de morphologie (≠ 0)
 
     @property
     def counts(self) -> list[int]:
@@ -38,11 +39,19 @@ class Multiverse:
         """
         if self.target is None:
             return "pas de cible"
+        partial = ""
+        if self.not_evaluated:
+            partial = (
+                f" PARTIEL : {len(self.cells)} cellules évaluées, niveaux non évalués "
+                f"({', '.join(self.not_evaluated)}) faute de morphologie ; verdict non définitif."
+            )
         if self.n_hits == 0:
+            if self.not_evaluated:
+                return f"aucune cellule évaluée ne donne la cible.{partial}"
             return "NON REPRODUCTIBLE (aucune cellule ne donne la cible)"
         if self.n_hits == len(self.cells):
-            return "reproduit dans toutes les cellules (nuls non encore évalués)"
-        return f"DÉPEND DE LA RÈGLE ({self.n_hits}/{len(self.cells)} cellules)"
+            return f"reproduit dans toutes les cellules évaluées (nuls non évalués).{partial}"
+        return f"DÉPEND DE LA RÈGLE ({self.n_hits}/{len(self.cells)} cellules).{partial}"
 
 
 def run(
@@ -53,8 +62,15 @@ def run(
     target: int | None = None,
     rules_list: list[Rules] | None = None,
 ) -> Multiverse:
+    skipped: tuple[str, ...] = ()
+    if rules_list is None:
+        if corpus.has_morphology:
+            rules_list = grid()
+        else:
+            rules_list = grid(("form",))
+            skipped = ("stem", "lemma", "root")
     cells = []
-    for r in rules_list if rules_list is not None else grid():
+    for r in rules_list:
         res = count(query, r, corpus, cfg)
         cells.append(Cell(r, res, None if target is None else res.n == target))
-    return Multiverse(query=query, target=target, cells=tuple(cells))
+    return Multiverse(query=query, target=target, cells=tuple(cells), not_evaluated=skipped)

@@ -32,3 +32,21 @@ Pourquoi : « aucun chiffre sans script ». `quran_lab.checks` refuse tout chiff
 
 ## D8 · 2026-10-13 · Réseau : tanzil.net et corpus.quran.com refusés (403)
 Conséquence : la Phase 1 est arrêtée avant l'étape 3 (téléchargement). Aucun chiffre sur le vrai texte n'existe. Action utilisateur : autoriser les domaines.
+
+## D9 · 2026-10-13 · Basmala : Tanzil la préfixe au verset 1 de 113 sourates (modèle corrigé)
+Constaté sur les fichiers réels (`reports/audit-tanzil.md`) : le texte Tanzil contient la basmala devant le verset 1 de toutes les sourates sauf la 9 ; 1:1 est la basmala elle-même. Le modèle initial (D4) supposait l'inverse et aurait compté deux fois la basmala. Nouveaux états de l'axe : `all_113` (les 113 basmalas), `numbered_only` (seulement 1:1), `none`. Au niveau forme, les 112 en-têtes sont de vrais mots (`Word.header=True`) ; aux niveaux morphologiques (le corpus n'a pas d'en-têtes, à vérifier) `all_113` ajoute des copies virtuelles. Exclure les muqatta'at d'un verset ne retire jamais sa basmala. L'état `as_text` de H001 se lit « basmala telle qu'imprimée par la source » (= `all_113` au niveau forme) : H001 n'est pas modifiée, l'interprétation est fixée ici. Grille : toujours 60 cellules.
+
+## D10 · 2026-10-13 · Les deux orthographes Tanzil n'ont pas les mêmes mots ni les mêmes positions
+Constaté : 363 versets n'ont pas le même nombre de mots en Uthmani et en simple-clean (ex. 2:21). Le modèle n'apparie donc JAMAIS les mots entre orthographes ; `Word` porte sa `variant`. Un appariement par position aurait supprimé 363 versets sans bruit.
+
+## D11 · 2026-10-13 · `skeleton` : deux corrections trouvées par le test différentiel sur le texte réel
+(1) Alif + maddah (U+0627 U+0653) = alif simple, à traiter AVANT NFC (qui le recomposait en lettre `آ`). (2) Tatwil + hamza combinante survit au réordonnancement NFC. Avant correction : 1 077 formes distinctes (3 687 occurrences) divergeaient entre les deux implémentations. Après : 0 désaccord sur tout le texte, dans les deux orthographes. Tests construits sur les codes exacts relevés dans le fichier.
+
+## D12 · 2026-10-13 · Le corpus morphologique exige une adresse e-mail de contact
+La page de téléchargement de corpus.quran.com demande un e-mail « pour vérification, non public ». Je n'envoie pas l'adresse de l'utilisateur à un site tiers sans son accord explicite. Tant que ce n'est pas résolu : mode « texte seul », niveaux stem/lemma/root déclarés NON ÉVALUÉS (jamais 0). Licence lue sur la page : GNU GPL, copie verbatim, attribution et lien vers corpus.quran.com.
+
+## D13 · 2026-10-13 · Options Tanzil retenues
+Tanzil v1.1 (février 2021), CC BY 3.0, texte non modifié. Sans signes de pause, sajdah, rub-el-hizb ni tanweens séquentiels (une marque séparée par un espace deviendrait un faux mot) ; avec tatwil (défaut de la page). Format `sourate|verset|texte`.
+
+## D14 · 2026-10-13 · Le hook de protection des sources brutes est volontairement conservateur
+Il bloque toute commande shell qui mentionne le dossier des sources brutes à côté d'un verbe modificateur, même dans un texte. Faux positifs possibles : écrire les documents via l'outil d'écriture, pas via un heredoc shell.

@@ -72,11 +72,10 @@ def _keys_for_word(loc: Loc, corpus: Corpus, rules: Rules) -> list[tuple[str, st
     `type` est la valeur comparée à la requête ; `variante` est ce qu'on affiche.
     """
     if rules.level == "form":
-        w = corpus.word_by_loc.get(loc)
+        w = corpus.word_by_loc.get((rules.text, loc))
         if w is None:
             return []
-        raw = w.uthmani if rules.text == "uthmani" else w.simple
-        return [(skeleton(raw), raw)]
+        return [(skeleton(w.text), w.text)]
     segs = corpus.segments_by_word.get(loc, ())
     stems = _stems(segs)
     if rules.level == "stem":
@@ -93,13 +92,27 @@ def _keys_for_word(loc: Loc, corpus: Corpus, rules: Rules) -> list[tuple[str, st
 
 def _all_locs(corpus: Corpus, rules: Rules) -> list[Loc]:
     if rules.level == "form":
-        return [w.loc for w in corpus.words]
+        return corpus.locs_by_variant.get(rules.text, [])
     return list(corpus.segments_by_word.keys())
 
 
-def _excluded_by_rules(loc: Loc, rules: Rules, cfg: Config) -> bool:
+def _is_header(loc: Loc, corpus: Corpus, rules: Rules) -> bool:
+    """Mot de basmala PRÉFIXÉ par Tanzil au verset 1 (n'existe qu'au niveau « forme »)."""
+    if rules.level != "form":
+        return False
+    w = corpus.word_by_loc.get((rules.text, loc))
+    return w is not None and w.header
+
+
+def _excluded_by_rules(loc: Loc, rules: Rules, cfg: Config, corpus: Corpus) -> bool:
+    """Exclusions par position. La basmala préfixée au verset 1 n'est PAS une muqatta'a :
+    exclure les muqatta'at d'un verset ne doit jamais retirer sa basmala (elle relève de
+    l'axe basmala seulement)."""
     s, a, _ = loc
-    if rules.muqattaat == "exclude" and (s, a) in cfg.muqattaat_verses:
+    header = _is_header(loc, corpus, rules)
+    if rules.muqattaat == "exclude" and (s, a) in cfg.muqattaat_verses and not header:
+        return True
+    if rules.basmala in ("numbered_only", "none") and header:
         return True
     return rules.basmala == "none" and (s, a) == (1, 1)
 
@@ -139,11 +152,13 @@ def count(query: str, rules: Rules, corpus: Corpus, cfg: Config) -> CountResult:
     occ: list[Loc] = []
     variants: Counter[str] = Counter()
     for loc in _all_locs(corpus, rules):
-        if _excluded_by_rules(loc, rules, cfg):
+        if _excluded_by_rules(loc, rules, cfg, corpus):
             continue
         keys = _keys_for_word(loc, corpus, rules)
         hit = [(t, v) for t, v in keys if _matches(t, q)]
-        is_compound = bool(compounds_of_base) and _is_compound_word(loc, corpus, compounds_of_base)
+        is_compound = bool(compounds_of_base) and _is_compound_word(
+            loc, corpus, rules, compounds_of_base
+        )
         if rules.compounds == "separate" and is_compound:
             continue
         if hit:
@@ -151,9 +166,11 @@ def count(query: str, rules: Rules, corpus: Corpus, cfg: Config) -> CountResult:
             variants[hit[0][1]] += 1
         elif rules.compounds == "with_base" and is_compound:
             occ.append(loc)
-            variants[f"[composé] {_compound_label(loc, corpus)}"] += 1
+            variants[f"[composé] {_compound_label(loc, corpus, rules)}"] += 1
 
-    if rules.basmala == "all":
+    # Niveaux morphologiques : le corpus n'a pas les 112 en-têtes que Tanzil préfixe. Pour « 113
+    # basmalas » on ajoute donc des copies virtuelles (sourate, 0, mot) des occurrences de 1:1.
+    if rules.basmala == "all_113" and rules.level != "form":
         base_occ = [o for o in occ if o[:2] == (1, 1)]
         for s in sorted(corpus.basmala_header_suras):
             for _, _, w in base_occ:
@@ -170,18 +187,17 @@ def count(query: str, rules: Rules, corpus: Corpus, cfg: Config) -> CountResult:
     )
 
 
-def _is_compound_word(loc: Loc, corpus: Corpus, compounds: set[str]) -> bool:
+def _is_compound_word(loc: Loc, corpus: Corpus, rules: Rules, compounds: set[str]) -> bool:
+    if rules.level == "form":
+        w = corpus.word_by_loc.get((rules.text, loc))
+        return w is not None and skeleton(w.text) in compounds
     segs = corpus.segments_by_word.get(loc)
-    if segs is not None and _word_skeleton(segs) in compounds:
-        return True
-    w = corpus.word_by_loc.get(loc)
-    return w is not None and skeleton(w.uthmani) in compounds
+    return segs is not None and _word_skeleton(segs) in compounds
 
 
-def _compound_label(loc: Loc, corpus: Corpus) -> str:
-    w = corpus.word_by_loc.get(loc)
-    if w is not None:
-        return w.uthmani
+def _compound_label(loc: Loc, corpus: Corpus, rules: Rules) -> str:
+    if rules.level == "form":
+        return corpus.word_by_loc[(rules.text, loc)].text
     return "".join(s.form for s in corpus.segments_by_word[loc])
 
 
@@ -193,7 +209,7 @@ def type_counts(rules: Rules, corpus: Corpus, cfg: Config) -> Counter[str]:
     """
     c: Counter[str] = Counter()
     for loc in _all_locs(corpus, rules):
-        if _excluded_by_rules(loc, rules, cfg):
+        if _excluded_by_rules(loc, rules, cfg, corpus):
             continue
         for t, _ in _keys_for_word(loc, corpus, rules):
             c[t] += 1

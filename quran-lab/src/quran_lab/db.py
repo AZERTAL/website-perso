@@ -5,10 +5,13 @@ from __future__ import annotations
 from pathlib import Path
 
 import duckdb
+import polars as pl
 
 from quran_lab.model import Corpus, Segment, Word
 
-_SEG_COLS = "sura, aya, word, seg, form, pos, seg_type, root, lemma, feats"
+_SEG_FIELDS = ("sura", "aya", "word", "seg", "form", "pos", "seg_type", "root", "lemma", "feats")
+_SEG_COLS = ", ".join(_SEG_FIELDS)
+_WORD_FIELDS = ("variant", "sura", "aya", "word", "text", "header")
 
 
 def write_corpus(corpus: Corpus, path: Path) -> None:
@@ -22,19 +25,20 @@ def write_corpus(corpus: Corpus, path: Path) -> None:
             "pos VARCHAR, seg_type VARCHAR, root VARCHAR, lemma VARCHAR, feats VARCHAR)"
         )
         con.execute(
-            "CREATE TABLE words (sura INT, aya INT, word INT, uthmani VARCHAR, simple VARCHAR)"
+            "CREATE TABLE words (variant VARCHAR, sura INT, aya INT, word INT, "
+            "text VARCHAR, header BOOLEAN)"
         )
-        con.executemany(
-            "INSERT INTO segments VALUES (?,?,?,?,?,?,?,?,?,?)",
-            [
-                (s.sura, s.aya, s.word, s.seg, s.form, s.pos, s.seg_type, s.root, s.lemma, s.feats)
-                for s in corpus.segments
-            ],
-        )
-        con.executemany(
-            "INSERT INTO words VALUES (?,?,?,?,?)",
-            [(w.sura, w.aya, w.word, w.uthmani, w.simple) for w in corpus.words],
-        )
+        # Insertion en bloc (executemany insère ligne par ligne : minutes pour 150 000 mots).
+        if corpus.segments:
+            segs = pl.DataFrame(
+                {c: [getattr(s, c) for s in corpus.segments] for c in _SEG_FIELDS},
+                schema_overrides={"root": pl.String, "lemma": pl.String},
+            )
+            con.register("segs_df", segs.to_arrow())
+            con.execute(f"INSERT INTO segments SELECT {_SEG_COLS} FROM segs_df")
+        words = pl.DataFrame({c: [getattr(w, c) for w in corpus.words] for c in _WORD_FIELDS})
+        con.register("words_df", words.to_arrow())
+        con.execute(f"INSERT INTO words SELECT {', '.join(_WORD_FIELDS)} FROM words_df")
     finally:
         con.close()
 
@@ -46,7 +50,8 @@ def read_corpus(path: Path) -> Corpus:
             f"SELECT {_SEG_COLS} FROM segments ORDER BY sura, aya, word, seg"
         ).fetchall()
         words = con.execute(
-            "SELECT sura, aya, word, uthmani, simple FROM words ORDER BY sura, aya, word"
+            "SELECT sura, aya, word, text, variant, header FROM words "
+            "ORDER BY variant, sura, aya, word"
         ).fetchall()
     finally:
         con.close()

@@ -25,7 +25,6 @@ class LoadReport:
     """Tout ce qui n'a pas pu être lu proprement. Rien n'est ignoré en silence."""
 
     skipped_lines: list[str] = field(default_factory=list)
-    word_count_mismatches: list[tuple[int, int, int, int]] = field(default_factory=list)
 
 
 def parse_tanzil(text: str) -> dict[tuple[int, int], str]:
@@ -45,27 +44,43 @@ def parse_tanzil(text: str) -> dict[tuple[int, int], str]:
     return verses
 
 
-def build_words(
-    uthmani: dict[tuple[int, int], str],
-    simple: dict[tuple[int, int], str],
-    report: LoadReport | None = None,
-) -> tuple[Word, ...]:
-    """Apparie les deux orthographes mot à mot. Un verset dont le nombre de mots diffère
-    entre les deux orthographes est consigné dans `report` et NON apparié."""
+def _header_len(verses: dict[tuple[int, int], str], sura: int) -> int:
+    """Nombre de mots de basmala préfixés au verset 1 de `sura` (0 si absente), par comparaison
+    avec les mots du verset 1:1 dans la MÊME orthographe. Aucune longueur n'est supposée."""
+    if sura in (1, 9) or (sura, 1) not in verses:
+        return 0
+    ref = verses[(1, 1)].split()
+    return len(ref) if verses[(sura, 1)].split()[: len(ref)] == ref else 0
+
+
+def header_anomalies(verses: dict[tuple[int, int], str]) -> list[int]:
+    """Sourates (hors 1 et 9) dont le verset 1 ne commence PAS par la basmala."""
+    return [s for s in range(2, 115) if s != 9 and _header_len(verses, s) == 0]
+
+
+def build_words(verses: dict[tuple[int, int], str], variant: str) -> tuple[Word, ...]:
+    """Mots d'UNE orthographe. Aucun appariement entre orthographes : leurs positions diffèrent."""
+    out: list[Word] = []
+    for (sura, aya), text in sorted(verses.items()):
+        h = _header_len(verses, sura) if aya == 1 else 0
+        out.extend(
+            Word(sura, aya, i, tok, variant, header=i <= h) for i, tok in enumerate(text.split(), 1)
+        )
+    return tuple(out)
+
+
+def word_count_differences(
+    uthmani: dict[tuple[int, int], str], simple: dict[tuple[int, int], str]
+) -> list[tuple[int, int, int, int]]:
+    """Versets au nombre de mots différent : (sourate, verset, n_uthmani, n_simple)."""
     if uthmani.keys() != simple.keys():
         only = sorted(uthmani.keys() ^ simple.keys())[:5]
         raise ValueError(f"versets présents dans une seule orthographe, ex. {only}")
-    words: list[Word] = []
-    for key in sorted(uthmani):
-        u, s = uthmani[key].split(), simple[key].split()
-        if len(u) != len(s):
-            if report is not None:
-                report.word_count_mismatches.append((*key, len(u), len(s)))
-            continue
-        words.extend(
-            Word(key[0], key[1], i, uw, sw) for i, (uw, sw) in enumerate(zip(u, s, strict=True), 1)
-        )
-    return tuple(words)
+    return [
+        (*k, len(uthmani[k].split()), len(simple[k].split()))
+        for k in sorted(uthmani)
+        if len(uthmani[k].split()) != len(simple[k].split())
+    ]
 
 
 def _features(raw: str) -> tuple[str | None, str | None, str]:

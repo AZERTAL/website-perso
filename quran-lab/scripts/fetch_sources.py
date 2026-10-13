@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import os
 import sys
 import urllib.request
@@ -34,6 +35,13 @@ def sources_table(rows: list[dict]) -> str:
         for r in rows
     ]
     return "\n".join([head, *lines])
+
+
+def merge_rows(old: list[dict], new: list[dict]) -> list[dict]:
+    """Fusionne par identifiant : `--only` ne doit jamais effacer les autres lignes."""
+    by_id = {r["id"]: r for r in old}
+    by_id.update({r["id"]: r for r in new})
+    return list(by_id.values())
 
 
 def upsert_table(md: str, table: str) -> str:
@@ -81,9 +89,15 @@ def main() -> int:
         os.chmod(dest, 0o444)
         rows.append({**s, "date": dt.date.today().isoformat(), "sha256": sha256_file(dest)})
     if rows:
+        manifest = LAB / "data" / "sources_manifest.json"
+        old = json.loads(manifest.read_text(encoding="utf-8")) if manifest.exists() else []
+        merged = merge_rows(old, rows)
+        manifest.write_text(
+            json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
         md_path = LAB / "SOURCES.md"
         md = md_path.read_text(encoding="utf-8")
-        md_path.write_text(upsert_table(md, sources_table(rows)), encoding="utf-8")
+        md_path.write_text(upsert_table(md, sources_table(merged)), encoding="utf-8")
         print(f"{len(rows)} source(s) enregistrée(s) dans SOURCES.md")
     for f in failures:
         print("ÉCHEC", f, file=sys.stderr)

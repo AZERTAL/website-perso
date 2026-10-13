@@ -31,13 +31,21 @@ class Segment:
 
 @dataclass(frozen=True)
 class Word:
-    """Un mot du texte Tanzil (découpage par espaces), dans les deux orthographes."""
+    """Un mot d'UNE orthographe Tanzil (découpage par espaces).
+
+    Les deux orthographes n'ont PAS les mêmes mots ni les mêmes positions : sur le texte
+    réel, 363 versets n'ont pas le même nombre de mots en Uthmani et en simple-clean
+    (ex. 2:21). Une position `word` n'a de sens que dans sa propre `variant`.
+    """
 
     sura: int
     aya: int
     word: int
-    uthmani: str
-    simple: str
+    text: str
+    variant: str  # "uthmani" | "simple"
+    # Vrai pour les 4 mots de la basmala que Tanzil PRÉFIXE au verset 1 des sourates 2 à 114
+    # (sauf 9). La morphologie du corpus coranique, elle, ne contient pas ces en-têtes.
+    header: bool = False
 
     @property
     def loc(self) -> Loc:
@@ -55,6 +63,10 @@ class Corpus:
         default_factory=lambda: frozenset(range(2, 115)) - {9}
     )
 
+    @property
+    def has_morphology(self) -> bool:
+        return bool(self.segments)
+
     @cached_property
     def segments_by_word(self) -> dict[Loc, tuple[Segment, ...]]:
         d: dict[Loc, list[Segment]] = defaultdict(list)
@@ -63,5 +75,12 @@ class Corpus:
         return {k: tuple(sorted(v, key=lambda s: s.seg)) for k, v in d.items()}
 
     @cached_property
-    def word_by_loc(self) -> dict[Loc, Word]:
-        return {w.loc: w for w in self.words}
+    def word_by_loc(self) -> dict[tuple[str, Loc], Word]:
+        return {(w.variant, w.loc): w for w in self.words}
+
+    @cached_property
+    def locs_by_variant(self) -> dict[str, list[Loc]]:
+        d: dict[str, list[Loc]] = defaultdict(list)
+        for w in self.words:
+            d[w.variant].append(w.loc)
+        return dict(d)

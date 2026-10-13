@@ -34,8 +34,8 @@ def naive_form_count(query, raw_lines, variant):
 def raw_lines_from(corpus, variant):
     by_verse: dict[tuple[int, int], list[str]] = {}
     for w in sorted(corpus.words, key=lambda w: w.loc):
-        token = w.uthmani if variant == "uthmani" else w.simple
-        by_verse.setdefault((w.sura, w.aya), []).append(token)
+        if w.variant == variant:
+            by_verse.setdefault((w.sura, w.aya), []).append(w.text)
     return [(s, a, " ".join(ws)) for (s, a), ws in by_verse.items()]
 
 

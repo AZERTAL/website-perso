@@ -35,4 +35,14 @@ def test_sources_with_null_url_are_listed_for_manual_resolution():
         )
     )
     nulls = [s["id"] for s in cfg["sources"] if not s.get("url")]
-    assert "tanzil_uthmani" in nulls  # l'URL de téléchargement n'a PAS été devinée
+    # la morphologie exige une adresse e-mail sur le site : son URL n'est PAS devinée
+    assert "qac_morphology_v04" in nulls
+    assert "tanzil_uthmani" not in nulls
+
+
+def test_merge_rows_keeps_other_sources_when_only_one_is_refetched():
+    a = {**ROW, "id": "a"}
+    b = {**ROW, "id": "b", "sha256": "bb"}
+    merged = fs.merge_rows([a, b], [{**a, "sha256": "new"}])
+    assert [r["id"] for r in merged] == ["a", "b"]
+    assert merged[0]["sha256"] == "new" and merged[1]["sha256"] == "bb"

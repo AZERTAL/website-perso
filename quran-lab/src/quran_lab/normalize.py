@@ -10,7 +10,9 @@ et retirer les marques combinantes replierait alors `أ` en `ا` sans le dire.
 
 from __future__ import annotations
 
+import re
 import unicodedata
+from functools import cache
 
 TATWEEL = chr(0x0640)
 ALIF = chr(0x0627)
@@ -18,6 +20,13 @@ ALIF_WASLA = chr(0x0671)
 HAMZA = chr(0x0621)
 HAMZA_ABOVE = chr(0x0654)
 HAMZA_BELOW = chr(0x0655)
+MADDAH = chr(0x0653)
+
+# Tatwil portant une hamza combinante, quelles que soient les voyelles intercalées (NFC réordonne
+# les marques : la source écrit tatwil, hamza, fatha ; après NFC on obtient tatwil, fatha, hamza).
+_TATWEEL_HAMZA = re.compile(
+    f"{TATWEEL}[\u064b-\u065f\u0670]*[{HAMZA_ABOVE}{HAMZA_BELOW}][\u064b-\u065f\u0670]*"
+)
 
 # Signes coraniques qui ne sont pas des marques combinantes (catégorie != Mn) mais
 # qui ne font pas partie du squelette consonantique.
@@ -41,18 +50,24 @@ def _drop(ch: str) -> bool:
     return unicodedata.category(ch) == "Mn" or ch in _EXTRA_STRIP
 
 
+@cache  # fonction pure ; les mots se répètent (types << occurrences)
 def skeleton(text: str) -> str:
     """Squelette consonantique : lettres de base seulement.
 
     Règles, dans l'ordre :
-    1. NFC (jamais NFD, voir l'en-tête du module).
-    2. Tatwil suivi d'une hamza combinante (orthographe uthmani de `شيئا`) -> lettre `ء`.
+    1. Alif + maddah (signe d'allongement) -> alif simple, avant NFC.
+    2. NFC (jamais NFD, voir l'en-tête du module).
+    3. Tatwil portant une hamza combinante (orthographe uthmani de `شيئا`, `الآخرة`) -> `ء`.
     3. Alif wasla `ٱ` -> `ا`.
     4. Retrait des diacritiques, signes coraniques et tatwil restants.
     5. Espaces normalisés.
     """
-    s = unicodedata.normalize("NFC", text)
-    s = s.replace(TATWEEL + HAMZA_ABOVE, HAMZA).replace(TATWEEL + HAMZA_BELOW, HAMZA)
+    # Signe d'allongement (maddah) sur un alif : ce n'est PAS la lettre « alif madda » `آ`, c'est
+    # un alif simple marqué (Tanzil Uthmani écrit `ا` + U+0653, jamais `آ`). À retirer AVANT NFC,
+    # qui recomposerait `ا` + `ٓ` en la lettre `آ` (constaté sur 3 687 occurrences du texte réel).
+    s = text.replace(ALIF + MADDAH, ALIF)
+    s = unicodedata.normalize("NFC", s)
+    s = _TATWEEL_HAMZA.sub(HAMZA, s)
     s = s.replace(ALIF_WASLA, ALIF)
     s = "".join(ch for ch in s if not _drop(ch))
     return " ".join(s.split())

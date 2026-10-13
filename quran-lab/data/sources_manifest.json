@@ -1,0 +1,35 @@
+[
+  {
+    "id": "tanzil_uthmani",
+    "dest": "quran-uthmani.txt",
+    "page": "https://tanzil.net/download/",
+    "url": "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&tatweel=true&agree=true",
+    "url_verified": true,
+    "note": "Tanzil v1.1 (février 2021). Options : SANS signes de pause, sajdah, rub-el-hizb ni tanweens séquentiels (une marque de pause séparée par un espace deviendrait un faux « mot ») ; AVEC tatwil (coche par défaut de la page). Format txt-2 : sourate|verset|texte.",
+    "license_note": "CC BY 3.0 (lu sur tanzil.net/docs/Text_License le 2026-10-13) : copie verbatim, modification interdite, attribution à Tanzil Project + lien tanzil.net, avis de copyright à reproduire dans les fichiers dérivés.",
+    "date": "2026-10-13",
+    "sha256": "457cf2fe5bfb2121f158d2d377b4e6efcf5cc62d70d6265206d579d0443a3158"
+  },
+  {
+    "id": "tanzil_simple_clean",
+    "dest": "quran-simple-clean.txt",
+    "page": "https://tanzil.net/download/",
+    "url": "https://tanzil.net/pub/download/index.php?quranType=simple-clean&outType=txt-2&tatweel=true&agree=true",
+    "url_verified": true,
+    "note": "Tanzil v1.1, type Simple (Clean) : sans diacritiques ni symboles. Mêmes options que l'Uthmani.",
+    "license_note": "CC BY 3.0, voir tanzil_uthmani.",
+    "date": "2026-10-13",
+    "sha256": "228df2a717671aeb9d2ff573002bd28d6b3f973f4bc7153554e3a81663d67610"
+  },
+  {
+    "id": "tanzil_metadata",
+    "dest": "quran-data.xml",
+    "page": "https://tanzil.net/docs/quran_metadata",
+    "url": "https://tanzil.net/res/text/metadata/quran-data.xml",
+    "url_verified": false,
+    "note": "Métadonnées : sourates, nombre de versets, juz', hizb, sajda, mecquoise/médinoise.",
+    "license_note": "À lire sur la page officielle. Non confirmée.",
+    "date": "2026-10-13",
+    "sha256": "8867c1d88191472adec9db694b3cd9f135b1a2ef580574d32cf888dcb22c5c7a"
+  }
+]

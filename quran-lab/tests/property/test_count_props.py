@@ -47,7 +47,7 @@ def test_two_code_paths_agree(corpus, cfg):
     """`count` (une requête) et `type_counts` (tous les types, une passe) doivent concorder."""
     bases = set(cfg.compounds.values())
     for r in grid():
-        if r.basmala == "all" or r.compounds != "separate":
+        if (r.basmala == "all_113" and r.level != "form") or r.compounds != "separate":
             continue
         tc = type_counts(r, corpus, cfg)
         for t, expected in tc.items():

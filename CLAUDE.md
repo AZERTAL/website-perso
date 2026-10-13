@@ -21,7 +21,7 @@ Comprendre (une question max, seulement si elle change l'action) -> planifier (m
 Tanzil (Uthmani et simple-clean) = seule base de comptage. Morphologie : Quranic Arabic Corpus v0.4 canonique. Traductions : affichage seulement, jamais pour compter. Tafsir : éditions publiées citées. `data/raw/` est en lecture seule (hook) ; seul `scripts/fetch_sources.py` y écrit. Divergences entre sources : `docs/divergences.md`.
 
 ## 3. Comptage
-Quatre niveaux (forme, radical sans clitiques, lemme, racine), toujours tous rapportés, sous la grille de 60 cellules (`quran_lab.rules.grid`). Une cellule `n/a` n'est pas 0. Un décompte est un ensemble de positions, pas un entier. Pièges : racine polysémique (ج ن ن), homographes (ملك), composés (يومئذ), pluriels supplétifs (نساء), muqatta'at, basmala (3 états).
+Quatre niveaux (forme, radical sans clitiques, lemme, racine), toujours tous rapportés, sous la grille de 60 cellules (`quran_lab.rules.grid`). Une cellule `n/a` n'est pas 0. Un décompte est un ensemble de positions, pas un entier. Pièges : racine polysémique (ج ن ن), homographes (ملك), composés (يومئذ), pluriels supplétifs (نساء), muqatta'at, basmala (3 états : all_113, numbered_only, none ; Tanzil préfixe la basmala au verset 1 de 113 sourates).
 
 ## 4. Statistiques
 Modèle nul pour tout pattern, comparaisons multiples corrigées, nombre total de tests déclaré, tailles d'effet avec intervalles. Détail : plan §5.

@@ -32,13 +32,24 @@ def _load(db: Path):
     return read_corpus(db), load_config(LAB / "config" / "counting_rules.yaml")
 
 
+# « basmala du texte » (H001) = telle qu'imprimée par la source : Tanzil préfixe 113 basmalas,
+# le corpus morphologique n'a que la basmala numérotée 1:1.
+_BASMALA_AS_PRINTED = {
+    "form": "all_113",
+    "stem": "numbered_only",
+    "lemma": "numbered_only",
+    "root": "numbered_only",
+}
+
+
 def _coincidence_rules(level: str):
     """Cellule de référence du taux N5 : texte simple, composés séparés, basmala du texte."""
     return next(
         r
         for r in grid()
         if r.level == level
-        and (r.basmala, r.muqattaat, r.compounds) == ("as_text", "include", "separate")
+        and (r.basmala, r.muqattaat, r.compounds)
+        == (_BASMALA_AS_PRINTED[level], "include", "separate")
         and r.text in (None, "simple")
     )
 
@@ -67,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
 
     co = {
         level: coincidence_rate(corpus, cfg, _coincidence_rules(level), a.target)
-        for level in ("form", "stem", "lemma", "root")
+        for level in (("form", "stem", "lemma", "root") if corpus.has_morphology else ("form",))
     }
     cmd = (
         f"cd quran-lab && uv run python -m quran_lab.cli verifie {a.query!r} "
