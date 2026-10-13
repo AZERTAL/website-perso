@@ -1,0 +1,28 @@
+# Sources à télécharger. `url: null` = URL exacte à lire sur la page officielle (jamais devinée).
+# Le téléchargement est réalisé UNIQUEMENT par scripts/fetch_sources.py.
+sources:
+  - id: tanzil_uthmani
+    dest: quran-uthmani.txt
+    page: https://tanzil.net/download/
+    url: null
+    note: "Texte Uthmani, format sourate|verset|texte. Choisir les options sans marques de pause ni ajouts, et noter ici les options choisies."
+    license_note: "À lire sur la page officielle (attribution, texte non modifié). Non confirmée."
+  - id: tanzil_simple_clean
+    dest: quran-simple-clean.txt
+    page: https://tanzil.net/download/
+    url: null
+    note: "Texte simple-clean, même format."
+    license_note: "Idem."
+  - id: tanzil_metadata
+    dest: quran-data.xml
+    page: https://tanzil.net/docs/quran_metadata
+    url: https://tanzil.net/res/text/metadata/quran-data.xml
+    url_verified: false
+    note: "Métadonnées : sourates, nombre de versets, juz', hizb, sajda, mecquoise/médinoise."
+    license_note: "À lire sur la page officielle. Non confirmée."
+  - id: qac_morphology_v04
+    dest: quranic-corpus-morphology-0.4.txt
+    page: https://corpus.quran.com/download/
+    url: null
+    note: "Quranic Arabic Corpus, morphologie v0.4. Peut exiger l'acceptation d'une licence sur la page."
+    license_note: "Annoncée GNU GPL sur la page officielle ; à confirmer en la lisant."

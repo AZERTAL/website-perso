@@ -1,0 +1,22 @@
+name: quran-lab-ci
+on:
+  push:
+    paths: ["quran-lab/**", ".github/workflows/quran-lab-ci.yml"]
+  pull_request:
+    paths: ["quran-lab/**"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: quran-lab
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # check_reports lit l'historique git (pré-enregistrement)
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest -q
+      - run: python3 scripts/check_reports.py

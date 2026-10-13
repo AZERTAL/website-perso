@@ -1,0 +1,44 @@
+# Règles de comptage. Chaque valeur ci-dessous est une DONNÉE de configuration,
+# pas un résultat. Statut : brouillon, à valider contre le corpus réel (voir docs/DECISIONS.md D5).
+
+# Versets composés uniquement de lettres isolées (muqatta'at), au format [sourate, verset].
+# Saisis de mémoire. Contrôle prévu dès réception des sources : doit coïncider exactement
+# avec les mots portant le tag POS "INL" du Quranic Arabic Corpus (tests/golden).
+muqattaat_verses:
+  - [2, 1]
+  - [3, 1]
+  - [7, 1]
+  - [10, 1]
+  - [11, 1]
+  - [12, 1]
+  - [13, 1]
+  - [14, 1]
+  - [15, 1]
+  - [19, 1]
+  - [20, 1]
+  - [26, 1]
+  - [27, 1]
+  - [28, 1]
+  - [29, 1]
+  - [30, 1]
+  - [31, 1]
+  - [32, 1]
+  - [36, 1]
+  - [38, 1]
+  - [40, 1]
+  - [41, 1]
+  - [42, 1]
+  - [42, 2]
+  - [43, 1]
+  - [44, 1]
+  - [45, 1]
+  - [46, 1]
+  - [50, 1]
+  - [68, 1]
+
+# Mots composés : squelette du composé -> squelette du mot de base.
+# Règle "with_base" : le composé est ajouté au décompte du mot de base.
+# Règle "separate" : il en est retiré. Indépendant de l'annotation du corpus.
+compounds:
+  "يومئذ": "يوم"
+  "حينئذ": "حين"
