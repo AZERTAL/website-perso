@@ -75,3 +75,14 @@ def test_preregistration_order(tmp_path: Path):
     _git(repo, "add", str(hyp))
     _git(repo, "commit", "-qm", "h2", env={"GIT_COMMITTER_DATE": "2026-01-03T00:00:00"})
     assert "APRÈS" in check_preregistration(rep, hyp.parent, repo)[0].msg
+
+
+def test_reports_readme_is_not_a_report(tmp_path):
+    from quran_lab.checks import check_all
+
+    (tmp_path / "reports").mkdir()
+    (tmp_path / "reports" / "README.md").write_text(
+        "Voir 365 <!-- BEGIN generated:x -->\n", encoding="utf-8"
+    )
+    _git(tmp_path, "init", "-q")
+    assert check_all(tmp_path, tmp_path) == []

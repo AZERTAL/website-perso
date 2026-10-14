@@ -26,3 +26,7 @@ quran-lab/.hypothesis/
 **/__pycache__/
 # fork mustafa0x : licence non établie, jamais commité (voir quran-lab/SOURCES.md)
 quran-lab/data/raw/quran-morphology.txt
+
+# jeu de données exporté : reconstruit par `make dataset`
+quran-lab/data/processed/*
+!quran-lab/data/processed/.gitkeep

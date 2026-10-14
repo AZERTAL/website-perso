@@ -144,6 +144,8 @@ def check_ledger(lab: Path, repo: Path) -> list[Problem]:
 def check_all(lab: Path, repo: Path) -> list[Problem]:
     problems: list[Problem] = []
     for rep in sorted((lab / "reports").glob("*.md")):
+        if rep.name == "README.md":  # documentation du dossier, pas un rapport
+            continue
         problems += check_report_text(rep.read_text(encoding="utf-8"), str(rep.relative_to(repo)))
         problems += check_preregistration(rep, lab / "hypotheses", repo)
     problems += check_ledger(lab, repo)

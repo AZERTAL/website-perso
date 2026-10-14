@@ -50,3 +50,19 @@ Tanzil v1.1 (février 2021), CC BY 3.0, texte non modifié. Sans signes de pause
 
 ## D14 · 2026-10-13 · Le hook de protection des sources brutes est volontairement conservateur
 Il bloque toute commande shell qui mentionne le dossier des sources brutes à côté d'un verbe modificateur, même dans un texte. Faux positifs possibles : écrire les documents via l'outil d'écriture, pas via un heredoc shell.
+
+## D15 · 2026-10-14 · Relecture sceptique de H001 (verdict FRAGILE) : ce qui est corrigé, ce qui reste
+Le relecteur indépendant n'avait pas vu notre raisonnement. Il a relancé le rapport (résultat identique) et recompté le mot dans le texte brut sans notre code (217 et 282, identiques). Il a relevé huit faiblesses ; traitement :
+
+1. **« Aucune cellule ne donne 365 » masquait que le niveau forme ne voit pas les formes à clitiques** (haute). Corrigé : section « Ce que ce niveau ne voit pas » dans le rapport H001 ; nouvelle hypothèse **H001-v2** qui balaie 512 spécifications. Résultat : 365 atteint par 5 spécifications, son voisin 364 par 8 → non remarquable. Statut `DÉPEND DE LA RÈGLE`.
+2. **La grille oublie les formes à clitiques, à `يوما`, au duel, aux suffixes** (haute). Traité par H001-v2 (interrupteurs T1 à T8) ; à refaire sur les vrais radicaux quand la morphologie sera acquise (`H001-v3`).
+3. **Contradiction D4 / D9 sur `as_text`** (moyenne-haute). Reconnue : D4 (avant les données) définissait `as_text` comme `numbered_only`, D9 (après) comme `all_113` au niveau forme, en affirmant que H001 n'était pas modifiée. C'était une réinterprétation après coup, qui aurait dû passer par `H001-v2`. Aucun effet sur ce mot (aucune cellule ne varie avec la basmala : vérifié par `inert_axes`), mais la règle de modification est désormais appliquée à la lettre (toute reformulation passe par une nouvelle version). **Reste à faire** : marquer la cellule primaire dans les rapports générés (le rapport ne la désigne pas encore).
+4. **Cellules gonflées par des axes sans effet** (moyenne). Corrigé : le rapport affiche le nombre de décomptes distincts (2) et les axes sans effet (basmala, muqatta'at, orthographe).
+5. **N5 sans pouvoir discriminant** (moyenne). Reconnu. La mesure pertinente est la comparaison aux nombres voisins dans l'espace des règles (H001-v2).
+6. **Registre des tests absent** (moyenne). Corrigé : `stats/ledger.py`, `reports/tests_ledger.csv`, vérification d'ajout seul via git, total affiché dans les rapports.
+7. **`code_sha` « -dirty »** (basse). Le rapport avait été produit avec du code non commité. Corrigé : `cli verifie` refuse désormais (`--allow-dirty` explicite) ; rapport régénéré sur arbre propre.
+8. **Tableau des variantes limité aux formes sans clitiques** (basse). Corrigé par H001-v2 (toutes les formes reconnues sont listées, avec leurs classes ; les non reconnues aussi).
+
+**Ce que le relecteur a aussi montré, et qu'on n'a pas le droit d'oublier** : une combinaison précise de formes (préfixes et article inclus, `يوما` inclus, duel et suffixes exclus) donne exactement 365. Elle a été trouvée en regardant le résultat. Le test pré-enregistré mesure si 365 est plus facile à atteindre que ses voisins : ce n'est pas le cas dans l'espace défini.
+
+**Reste ouvert** : refaire le test avec la vraie morphologie (H001-v3), nuls N0 à N4, et relecture humaine. Les horodatages de `27f05e6` et `9bf9507` sont identiques à la seconde : l'ordre repose sur la topologie git (déjà prouvé par le fichier non modifié).
