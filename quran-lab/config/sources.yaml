@@ -1,0 +1,30 @@
+# Sources à télécharger. `url: null` = URL exacte à lire sur la page officielle (jamais devinée).
+# Le téléchargement est réalisé UNIQUEMENT par scripts/fetch_sources.py.
+sources:
+  - id: tanzil_uthmani
+    dest: quran-uthmani.txt
+    page: https://tanzil.net/download/
+    url: "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&tatweel=true&agree=true"
+    url_verified: true
+    note: "Tanzil v1.1 (février 2021). Options : SANS signes de pause, sajdah, rub-el-hizb ni tanweens séquentiels (une marque de pause séparée par un espace deviendrait un faux « mot ») ; AVEC tatwil (coche par défaut de la page). Format txt-2 : sourate|verset|texte."
+    license_note: "CC BY 3.0 (lu sur tanzil.net/docs/Text_License le 2026-10-13) : copie verbatim, modification interdite, attribution à Tanzil Project + lien tanzil.net, avis de copyright à reproduire dans les fichiers dérivés."
+  - id: tanzil_simple_clean
+    dest: quran-simple-clean.txt
+    page: https://tanzil.net/download/
+    url: "https://tanzil.net/pub/download/index.php?quranType=simple-clean&outType=txt-2&tatweel=true&agree=true"
+    url_verified: true
+    note: "Tanzil v1.1, type Simple (Clean) : sans diacritiques ni symboles. Mêmes options que l'Uthmani."
+    license_note: "CC BY 3.0, voir tanzil_uthmani."
+  - id: tanzil_metadata
+    dest: quran-data.xml
+    page: https://tanzil.net/docs/quran_metadata
+    url: https://tanzil.net/res/text/metadata/quran-data.xml
+    url_verified: false
+    note: "Métadonnées : sourates, nombre de versets, juz', hizb, sajda, mecquoise/médinoise."
+    license_note: "À lire sur la page officielle. Non confirmée."
+  - id: qac_morphology_v04
+    dest: quranic-corpus-morphology-0.4.txt
+    page: https://corpus.quran.com/download/
+    url: null
+    note: "Quranic Arabic Corpus, morphologie v0.4. Peut exiger l'acceptation d'une licence sur la page."
+    license_note: "Annoncée GNU GPL sur la page officielle ; à confirmer en la lisant."

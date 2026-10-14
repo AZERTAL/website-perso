@@ -1,0 +1,58 @@
+{
+  "differential": {
+    "simple": {
+      "n_disagreements": 0,
+      "n_sample_disagreements": 0,
+      "same_skeleton_function": 0,
+      "sample_size": 100,
+      "tokens": 78248,
+      "types_a": 14868,
+      "types_b": 14868
+    },
+    "uthmani": {
+      "n_disagreements": 0,
+      "n_sample_disagreements": 0,
+      "same_skeleton_function": 0,
+      "sample_size": 100,
+      "tokens": 77881,
+      "types_a": 14814,
+      "types_b": 14814
+    }
+  },
+  "header_words": {
+    "simple": 448,
+    "uthmani": 440
+  },
+  "invariants": {
+    "simple-clean": {
+      "empty_verses": [],
+      "sura_without_basmala_prefix": [],
+      "suras": 114,
+      "suras_whose_verse_count_differs_from_metadata": [],
+      "verses": 6236
+    },
+    "uthmani": {
+      "empty_verses": [],
+      "sura_without_basmala_prefix": [
+        95,
+        97
+      ],
+      "suras": 114,
+      "suras_whose_verse_count_differs_from_metadata": [],
+      "verses": 6236
+    }
+  },
+  "revelation": {
+    "Meccan": 86,
+    "Medinan": 28
+  },
+  "word_diffs": {
+    "extra_words_simple": 367,
+    "simple_has_fewer": 0,
+    "verses": 363
+  },
+  "words": {
+    "simple": 78248,
+    "uthmani": 77881
+  }
+}

@@ -1,0 +1,20 @@
+domain: business
+title: Commerce, mesure, dette, intérêt, subsistance
+status: pre-enregistre
+queries:
+  - {id: business-01, kind: word, text: "تجارة", why: "commerce"}
+  - {id: business-02, kind: phrase, text: "تجارة عن تراض", why: "commerce par consentement"}
+  - {id: business-03, kind: word, text: "البيع", why: "vente"}
+  - {id: business-04, kind: phrase, text: "أحل الله البيع", why: "licéité de la vente"}
+  - {id: business-05, kind: word, text: "الربا", why: "intérêt, usure"}
+  - {id: business-06, kind: phrase, text: "وحرم الربا", why: "interdiction de l'intérêt"}
+  - {id: business-07, kind: word, text: "الكيل", why: "mesure de volume"}
+  - {id: business-08, kind: phrase, text: "أوفوا الكيل", why: "injonction de mesure juste"}
+  - {id: business-09, kind: word, text: "الميزان", why: "balance"}
+  - {id: business-10, kind: phrase, text: "تداينتم بدين", why: "contrat de dette"}
+  - {id: business-11, kind: word, text: "فاكتبوه", why: "écriture d'un contrat"}
+  - {id: business-12, kind: word, text: "الرزاق", why: "pourvoyeur de subsistance"}
+  - {id: business-13, kind: phrase, text: "أموالكم بينكم بالباطل", why: "biens et échanges illicites"}
+  - {id: business-14, kind: word, text: "للمطففين", why: "fraude sur la mesure"}
+  - {id: business-15, kind: word, text: "اشتروا", why: "verbe « acheter »"}
+  - {id: business-16, kind: phrase, text: "ربحت تجارتهم", why: "profit du commerce"}

@@ -15,3 +15,18 @@ dist/
 *.swp
 *.swo
 .DS_Store
+
+# quran-lab
+quran-lab/.venv/
+quran-lab/data/quran.duckdb
+quran-lab/data/quran.duckdb.wal
+quran-lab/.pytest_cache/
+quran-lab/.ruff_cache/
+quran-lab/.hypothesis/
+**/__pycache__/
+# fork mustafa0x : licence non établie, jamais commité (voir quran-lab/SOURCES.md)
+quran-lab/data/raw/quran-morphology.txt
+
+# jeu de données exporté : reconstruit par `make dataset`
+quran-lab/data/processed/*
+!quran-lab/data/processed/.gitkeep

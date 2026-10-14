@@ -1,0 +1,5 @@
+# FORMAT RECONSTITUÉ DE MÉMOIRE, non validé contre corpus.quran.com (domaine bloqué).
+LOCATION	FORM	TAG	FEATURES
+(1:1:1:1)	bi	P	PREF|bi+
+(1:1:1:2)	somi	N	STEM|POS:N|LEM:{som|ROOT:smw|M|GEN
+(1:4:2:1)	yawomi	N	STEM|POS:N|LEM:yawom|ROOT:ywm|M|GEN

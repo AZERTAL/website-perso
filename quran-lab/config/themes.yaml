@@ -1,0 +1,64 @@
+# Lexique des concepts. BROUILLON NON VALIDÉ : les listes de départ viennent du cahier des charges.
+# Règle : un lexique est GELÉ (commit) AVANT d'être compté ; la justification est obligatoire.
+# `type` vaut `undecided` tant que `linguiste-morpho` n'a pas tranché racine / lemme.
+status: draft_unvalidated
+concepts:
+  paradis:
+    entries:
+      - {ar: "جنة", type: undecided, why: "terme central du jardin / paradis", caveat: "la racine ج ن ن couvre aussi les djinns, la folie, le fœtus : ventiler par lemme"}
+      - {ar: "فردوس", type: undecided, why: "nom d'un degré du paradis", caveat: "peu d'occurrences attendues, à confirmer par comptage"}
+      - {ar: "عدن", type: undecided, why: "« jardins d'Éden » (جنات عدن)", caveat: "même chaîne que la racine verbale « demeurer » : vérifier les contextes"}
+  enfer:
+    entries:
+      - {ar: "نار", type: undecided, why: "feu, terme général", caveat: "désigne aussi le feu ordinaire (pas seulement l'enfer)"}
+      - {ar: "جهنم", type: undecided, why: "nom propre de l'enfer", caveat: ""}
+      - {ar: "سعير", type: undecided, why: "brasier", caveat: "adjectif possible hors enfer"}
+      - {ar: "جحيم", type: undecided, why: "fournaise", caveat: ""}
+  temps:
+    entries:
+      - {ar: "زمن", type: undecided, why: "temps", caveat: "à vérifier : racine peu fréquente"}
+      - {ar: "دهر", type: undecided, why: "durée, temps", caveat: ""}
+      - {ar: "يوم", type: undecided, why: "jour", caveat: "polysémie : jour calendaire, Jour du Jugement, période indéterminée ; composé يومئذ"}
+      - {ar: "ساعة", type: undecided, why: "heure, Heure (de la fin)", caveat: "deux sens distincts à séparer"}
+      - {ar: "عصر", type: undecided, why: "époque / après-midi", caveat: "racine aussi « presser »"}
+      - {ar: "حين", type: undecided, why: "moment", caveat: "composé حينئذ"}
+  homme_femme:
+    entries:
+      - {ar: "رجل", type: undecided, why: "homme (adulte, masculin)", caveat: ""}
+      - {ar: "امرأة", type: undecided, why: "femme, épouse", caveat: "pluriel supplétif نساء (racine différente) : compter les deux"}
+      - {ar: "إنسان", type: undecided, why: "être humain", caveat: ""}
+      - {ar: "ذكر", type: undecided, why: "mâle", caveat: "la racine ذ ك ر couvre aussi « se souvenir, invoquer » : ventiler par lemme"}
+      - {ar: "أنثى", type: undecided, why: "femelle", caveat: ""}
+      - {ar: "نساء", type: undecided, why: "femmes (pluriel supplétif)", caveat: ""}
+  anges:
+    entries:
+      - {ar: "ملك", type: undecided, why: "ange (ملَك)", caveat: "homographes : roi (مَلِك), royauté (مُلْك), posséder (ملك) : lemmes à séparer"}
+      - {ar: "ملائكة", type: undecided, why: "anges (pluriel)", caveat: ""}
+      - {ar: "جبريل", type: undecided, why: "nom d'un ange", caveat: ""}
+  demons_djinns:
+    entries:
+      - {ar: "شيطان", type: undecided, why: "démon", caveat: ""}
+      - {ar: "إبليس", type: undecided, why: "nom propre", caveat: ""}
+      - {ar: "جن", type: undecided, why: "djinns", caveat: "même squelette que « jardin » (جنّة) : ventiler par lemme"}
+  cosmos:
+    entries:
+      - {ar: "سماء", type: undecided, why: "ciel", caveat: "sens multiples (ciel, pluie, étage) à vérifier"}
+      - {ar: "أرض", type: undecided, why: "terre", caveat: ""}
+      - {ar: "نجم", type: undecided, why: "étoile", caveat: ""}
+      - {ar: "قمر", type: undecided, why: "lune", caveat: ""}
+      - {ar: "شمس", type: undecided, why: "soleil", caveat: ""}
+      - {ar: "كوكب", type: undecided, why: "astre, planète", caveat: ""}
+      - {ar: "فلك", type: undecided, why: "orbite / vaisseau", caveat: "deux sens : orbite céleste et navire : séparer par lemme et contexte"}
+  eau_cycles:
+    entries:
+      - {ar: "ماء", type: undecided, why: "eau", caveat: ""}
+      - {ar: "مطر", type: undecided, why: "pluie", caveat: ""}
+      - {ar: "سحاب", type: undecided, why: "nuage", caveat: ""}
+      - {ar: "بحر", type: undecided, why: "mer", caveat: ""}
+      - {ar: "ريح", type: undecided, why: "vent", caveat: "pluriel رياح"}
+  creation_vie:
+    entries:
+      - {ar: "خلق", type: undecided, why: "créer", caveat: "racine verbale très fréquente, sens aussi « caractère » (خُلُق)"}
+      - {ar: "حياة", type: undecided, why: "vie", caveat: ""}
+      - {ar: "موت", type: undecided, why: "mort", caveat: ""}
+      - {ar: "بعث", type: undecided, why: "résurrection", caveat: "sens aussi « envoyer » (un messager)"}
