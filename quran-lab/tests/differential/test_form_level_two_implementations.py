@@ -45,9 +45,3 @@ def test_two_implementations_agree(corpus, cfg, variant, query):
     a = count(query, Rules("form", text=variant, compounds="separate"), corpus, cfg).n
     b = naive_form_count(query, raw_lines_from(corpus, variant), variant)
     assert a == b
-
-
-@pytest.mark.needs_data
-@pytest.mark.skip(reason="exécuter sur le texte Tanzil complet dès réception des sources")
-def test_full_tanzil_text_all_types():
-    """À activer à l'étape 3 : A et B doivent concorder sur TOUS les types de TOUT le texte."""

@@ -54,6 +54,26 @@ class Multiverse:
         return f"DÉPEND DE LA RÈGLE ({self.n_hits}/{len(self.cells)} cellules).{partial}"
 
 
+def inert_axes(m: Multiverse) -> list[str]:
+    """Axes de règles qui ne changent AUCUN décompte, tout le reste étant fixé.
+
+    Sert à ne pas confondre « 24 cellules » avec « 24 mesures indépendantes » : pour un mot
+    sans basmala ni lettre isolée, l'axe basmala et l'axe muqatta'at sont inertes."""
+    names = ("basmala", "muqattaat", "text", "compounds")
+    inert = []
+    for i, name in enumerate(names):
+        groups: dict[tuple, set[int]] = {}
+        varies = set()
+        for c in m.cells:
+            r = c.rules
+            vals = (r.basmala, r.muqattaat, r.text, r.compounds)
+            varies.add(vals[i])
+            groups.setdefault((r.level, *vals[:i], *vals[i + 1 :]), set()).add(c.result.n)
+        if len(varies) > 1 and all(len(g) == 1 for g in groups.values()):
+            inert.append(name)
+    return inert
+
+
 def run(
     query: str,
     corpus: Corpus,

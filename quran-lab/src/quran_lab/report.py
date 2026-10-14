@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from collections import Counter
 
-from quran_lab.multiverse import Multiverse
+from quran_lab.multiverse import Multiverse, inert_axes
 
 LIMITS = (
     "Texte de référence : Tanzil, lecture Hafs ʿan ʿĀṣim, numérotation des versets de cette "
@@ -78,6 +78,7 @@ def render_verification_report(
     code: str,
     m: Multiverse,
     coincidences: dict[str, dict],
+    ledger_total: int | None = None,
 ) -> str:
     fm = (
         f"---\ngenerated_by: {command}\ndata_manifest_sha256: {raw_hash}\ncode_sha: {code}\n"
@@ -100,6 +101,15 @@ def render_verification_report(
         "<!-- BEGIN generated:quran_lab.report.render_grid_table -->",
         render_grid_table(m),
         "<!-- END generated -->",
+        "",
+        "## Combien de mesures indépendantes ?",
+        "<!-- BEGIN generated:quran_lab.multiverse.inert_axes -->",
+        f"cellules évaluées : {len(m.cells)} ; décomptes distincts : {len(set(m.counts))} ; "
+        f"axes sans effet sur ce mot : {', '.join(inert_axes(m)) or 'aucun'}",
+        "<!-- END generated -->",
+        "",
+        "Les cellules ne sont pas des mesures indépendantes : un axe sans effet multiplie les "
+        "cellules sans multiplier l'information.",
         "",
         "## Courbe de spécification (valeur -> nombre de cellules)",
         "<!-- BEGIN generated:quran_lab.report.render_distribution -->",
@@ -130,6 +140,23 @@ def render_verification_report(
             "",
         ]
     body += [
+        "## Ce que ce niveau ne voit pas",
+        "Le niveau forme compare le mot entier. Les formes précédées d'une conjonction, d'une "
+        "préposition ou de l'article, ou suffixées, sont invisibles ici. "
+        "L'absence de la cible à ce niveau n'est donc **pas** une réfutation. "
+        "L'exploration de ces formes est l'objet de l'hypothèse H001-v2 "
+        "(rapport `reports/H001-v2-espace-de-regles.md`).",
+        "",
+        *(
+            [
+                "<!-- BEGIN generated:quran_lab.stats.ledger.total_comparisons -->",
+                f"Nombre total de comparaisons déclarées au registre des tests : {ledger_total}",
+                "<!-- END generated -->",
+                "",
+            ]
+            if ledger_total is not None
+            else []
+        ),
         "## Reproduction",
         "```",
         command,

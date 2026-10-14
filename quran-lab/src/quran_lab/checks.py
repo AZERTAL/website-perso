@@ -126,9 +126,25 @@ def check_preregistration(report: Path, hyp_dir: Path, repo: Path) -> list[Probl
     return []
 
 
+def check_ledger(lab: Path, repo: Path) -> list[Problem]:
+    """Le registre des tests est en ajout seul : le fichier de travail doit COMMENCER par le contenu
+    déjà commité (aucune ligne modifiée ni supprimée)."""
+    path = lab / "reports" / "tests_ledger.csv"
+    if not path.exists():
+        return []
+    rel = str(path.relative_to(repo))
+    r = subprocess.run(["git", "show", f"HEAD:{rel}"], cwd=repo, capture_output=True, text=True)
+    if r.returncode != 0:
+        return []  # pas encore commité : rien à comparer
+    if not path.read_text(encoding="utf-8").startswith(r.stdout):
+        return [Problem(rel, 1, "registre des tests modifié autrement que par ajout de lignes")]
+    return []
+
+
 def check_all(lab: Path, repo: Path) -> list[Problem]:
     problems: list[Problem] = []
     for rep in sorted((lab / "reports").glob("*.md")):
         problems += check_report_text(rep.read_text(encoding="utf-8"), str(rep.relative_to(repo)))
         problems += check_preregistration(rep, lab / "hypotheses", repo)
+    problems += check_ledger(lab, repo)
     return problems

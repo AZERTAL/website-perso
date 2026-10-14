@@ -16,6 +16,7 @@ from quran_lab.report import (
     render_verification_report,
 )
 from quran_lab.rules import grid, load_config
+from quran_lab.stats.ledger import total_comparisons
 from quran_lab.stats.nulls import coincidence_rate
 
 LAB = Path(__file__).resolve().parents[2]
@@ -67,8 +68,20 @@ def main(argv: list[str] | None = None) -> int:
     v.add_argument("--claim", required=True)
     v.add_argument("--hypothesis", required=True)
     v.add_argument("--out", type=Path, required=True)
+    v.add_argument(
+        "--allow-dirty",
+        action="store_true",
+        help="autorise un rapport produit avec du code non commité (déconseillé : le hash du code "
+        "ne permettrait plus de retrouver le code exact)",
+    )
     a = ap.parse_args(argv)
 
+    if a.cmd == "verifie" and not a.allow_dirty and code_sha(LAB.parent).endswith("-dirty"):
+        print(
+            "Arbre git modifié (code_sha « -dirty ») : commiter d'abord, ou --allow-dirty.",
+            file=sys.stderr,
+        )
+        return 4
     corpus, cfg = _load(a.db)
     m = run(a.query, corpus, cfg, target=a.target)
     if a.cmd == "compte":
@@ -93,6 +106,7 @@ def main(argv: list[str] | None = None) -> int:
         code=code_sha(LAB.parent),
         m=m,
         coincidences=co,
+        ledger_total=total_comparisons(LAB / "reports" / "tests_ledger.csv"),
     )
     a.out.write_text(text, encoding="utf-8")
     print(f"écrit : {a.out}")
