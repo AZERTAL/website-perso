@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sys
 from collections import Counter
+from datetime import date
 from pathlib import Path
 
 LAB = Path(__file__).resolve().parents[1]
@@ -16,7 +17,7 @@ sys.path.insert(0, str(LAB / "src"))
 from quran_lab.db import read_corpus  # noqa: E402
 from quran_lab.normalize import skeleton  # noqa: E402
 from quran_lab.provenance import code_sha, raw_manifest_hash  # noqa: E402
-from quran_lab.stats.ledger import total_comparisons  # noqa: E402
+from quran_lab.stats.ledger import Entry, append, read  # noqa: E402
 from quran_lab.stats.spec_space import (  # noqa: E402
     TOGGLE_LABELS,
     TOGGLES,
@@ -92,10 +93,6 @@ def main() -> int:
                 ["interrupteurs sans effet", ", ".join(inert_toggles(res)) or "aucun"],
                 ["N(cible)", n[TARGET]],
                 ["max N(voisins)", max(neigh.values())],
-                [
-                    "registre : comparaisons déclarées",
-                    total_comparisons(LAB / "reports" / "tests_ledger.csv"),
-                ],
             ],
         ),
         "<!-- END generated -->",
@@ -150,6 +147,25 @@ def main() -> int:
     ]
     (LAB / "reports" / "H001-v2-espace-de-regles.md").write_text("\n".join(out), encoding="utf-8")
     print("écrit : reports/H001-v2-espace-de-regles.md")
+    ledger = LAB / "reports" / "tests_ledger.csv"
+    if not any(e.test_id == "H001-v2" for e in read(ledger)):
+        v = verdict(res, TARGET, LO, HI)
+        append(
+            ledger,
+            Entry(
+                "H001-v2",
+                date.today().isoformat(),
+                "H001-v2",
+                "F-nombres",
+                1,
+                f"N({TARGET})={n[TARGET]} contre max N(voisins {LO}-{HI})={max(neigh.values())} "
+                f"sur {len(res.totals)} spécifications",
+                "n/a",
+                "n/a",
+                "NON REPRODUCTIBLE" if v.startswith("NON") else "DÉPEND DE LA RÈGLE",
+            ),
+        )
+        print("registre : H001-v2 ajouté")
     return 0
 
 
