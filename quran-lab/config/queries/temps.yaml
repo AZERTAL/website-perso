@@ -1,0 +1,17 @@
+domain: temps
+title: Temps, durées, sommeil et réveil, heure
+status: pre-enregistre
+queries:
+  - {id: temps-01, kind: phrase, text: "ألف سنة", why: "durée longue exprimée en années"}
+  - {id: temps-02, kind: phrase, text: "خمسين ألف سنة", why: "durée très longue exprimée en années"}
+  - {id: temps-03, kind: word, text: "مقداره", why: "terme de mesure d'une durée"}
+  - {id: temps-04, kind: word, text: "لبثتم", why: "verbe « demeurer, rester », deuxième personne"}
+  - {id: temps-05, kind: word, text: "لبثوا", why: "verbe « demeurer, rester », troisième personne"}
+  - {id: temps-06, kind: phrase, text: "يوما أو بعض يوم", why: "estimation d'une durée de séjour"}
+  - {id: temps-07, kind: phrase, text: "مائة عام", why: "durée d'un siècle"}
+  - {id: temps-08, kind: word, text: "وازدادوا", why: "verbe « ajouter », contexte de durée"}
+  - {id: temps-09, kind: word, text: "الدهر", why: "terme de temps long"}
+  - {id: temps-10, kind: word, text: "الساعة", why: "l'heure, le moment"}
+  - {id: temps-11, kind: word, text: "سنين", why: "années"}
+  - {id: temps-12, kind: word, text: "والعصر", why: "terme de temps, serment"}
+  - {id: temps-13, kind: word, text: "أمد", why: "terme d'échéance"}

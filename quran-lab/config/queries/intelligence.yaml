@@ -1,0 +1,19 @@
+domain: intelligence
+title: Raison, compréhension, discernement
+status: pre-enregistre
+queries:
+  - {id: intel-01, kind: word, text: "تعقلون", why: "verbe de la racine « raisonner », deuxième personne"}
+  - {id: intel-02, kind: word, text: "يعقلون", why: "verbe de la racine « raisonner », troisième personne"}
+  - {id: intel-03, kind: phrase, text: "لعلكم تعقلون", why: "formule d'espérance de raisonnement"}
+  - {id: intel-04, kind: phrase, text: "أفلا تعقلون", why: "question rhétorique de raisonnement"}
+  - {id: intel-05, kind: phrase, text: "لا يعقلون", why: "négation du raisonnement"}
+  - {id: intel-06, kind: phrase, text: "أولي الألباب", why: "détenteurs d'intelligence (pluriel de « lubb »)"}
+  - {id: intel-07, kind: word, text: "الألباب", why: "pluriel de « lubb », cœur de l'intelligence"}
+  - {id: intel-08, kind: phrase, text: "لقوم يتفكرون", why: "formule de réflexion"}
+  - {id: intel-09, kind: phrase, text: "لا يفقهون", why: "négation de la compréhension"}
+  - {id: intel-10, kind: word, text: "يفقهون", why: "verbe « comprendre »"}
+  - {id: intel-11, kind: word, text: "الأفئدة", why: "pluriel de « fu'ad », siège de la compréhension"}
+  - {id: intel-12, kind: word, text: "تذكرون", why: "verbe « se rappeler, prendre en considération »"}
+  - {id: intel-13, kind: word, text: "يتذكر", why: "verbe « se rappeler »"}
+  - {id: intel-14, kind: word, text: "يبصرون", why: "verbe « voir, discerner »"}
+  - {id: intel-15, kind: word, text: "الأبصار", why: "pluriel de « basar », vue"}

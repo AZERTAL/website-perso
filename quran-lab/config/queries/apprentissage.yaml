@@ -1,0 +1,17 @@
+domain: apprentissage
+title: Savoir, écriture, lecture, réflexion, enseignement
+status: pre-enregistre
+queries:
+  - {id: appr-01, kind: phrase, text: "علم بالقلم", why: "enseignement par l'écriture"}
+  - {id: appr-02, kind: word, text: "اقرأ", why: "impératif « lis, récite »"}
+  - {id: appr-03, kind: phrase, text: "رب زدني علما", why: "demande d'accroissement du savoir"}
+  - {id: appr-04, kind: phrase, text: "الذين يعلمون والذين لا يعلمون", why: "comparaison entre qui sait et qui ne sait pas"}
+  - {id: appr-05, kind: word, text: "يتدبرون", why: "réflexion sur un texte"}
+  - {id: appr-06, kind: phrase, text: "أفلا يتدبرون القرآن", why: "invitation à réfléchir sur le texte"}
+  - {id: appr-07, kind: phrase, text: "الكتاب والحكمة", why: "enseignement d'un écrit et de la sagesse"}
+  - {id: appr-08, kind: phrase, text: "علمه البيان", why: "enseignement de l'expression"}
+  - {id: appr-09, kind: word, text: "القلم", why: "instrument d'écriture"}
+  - {id: appr-10, kind: word, text: "تعلمون", why: "verbe « savoir », deuxième personne"}
+  - {id: appr-11, kind: phrase, text: "الذين أوتوا العلم", why: "détenteurs du savoir"}
+  - {id: appr-12, kind: word, text: "يتفكرون", why: "réflexion"}
+  - {id: appr-13, kind: word, text: "تتفكرون", why: "réflexion"}

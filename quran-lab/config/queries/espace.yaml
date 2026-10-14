@@ -1,0 +1,22 @@
+domain: espace
+title: Voyage, ascension, couches du ciel, limites
+status: pre-enregistre
+queries:
+  - {id: espace-01, kind: word, text: "أسرى", why: "verbe « voyager de nuit »"}
+  - {id: espace-02, kind: phrase, text: "بعبده ليلا", why: "expression de voyage nocturne"}
+  - {id: espace-03, kind: word, text: "المعارج", why: "terme « voies d'ascension »"}
+  - {id: espace-04, kind: word, text: "تعرج", why: "verbe « monter »"}
+  - {id: espace-05, kind: word, text: "يعرج", why: "verbe « monter »"}
+  - {id: espace-06, kind: word, text: "أقطار", why: "terme « confins, régions »"}
+  - {id: espace-07, kind: word, text: "تنفذوا", why: "verbe « traverser, franchir »"}
+  - {id: espace-08, kind: word, text: "فانفذوا", why: "verbe « traverser, franchir », impératif"}
+  - {id: espace-09, kind: word, text: "بسلطان", why: "terme « autorité, pouvoir » dans un contexte de franchissement"}
+  - {id: espace-10, kind: phrase, text: "سبع سماوات", why: "ciel en sept"}
+  - {id: espace-11, kind: phrase, text: "سبع سموات", why: "même expression, autre orthographe"}
+  - {id: espace-12, kind: word, text: "طباقا", why: "terme « en couches »"}
+  - {id: espace-13, kind: phrase, text: "السماء الدنيا", why: "ciel le plus proche"}
+  - {id: espace-14, kind: phrase, text: "سيروا في الأرض", why: "injonction de voyager"}
+  - {id: espace-15, kind: phrase, text: "ضربتم في الأرض", why: "voyage"}
+  - {id: espace-16, kind: phrase, text: "مغرب الشمس", why: "voyage vers l'ouest"}
+  - {id: espace-17, kind: phrase, text: "مطلع الشمس", why: "voyage vers l'est"}
+  - {id: espace-18, kind: word, text: "القرنين", why: "personnage voyageur"}
