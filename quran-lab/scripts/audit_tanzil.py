@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from collections import Counter
 from pathlib import Path
@@ -168,6 +169,31 @@ def main() -> int:
         ]
     out += ["## Reproduction", "```", cmd, "```", ""]
     (LAB / "reports").mkdir(exist_ok=True)
+    slim = {
+        v: {k: x for k, x in d.items() if k not in ("disagreements", "sample_disagreements")}
+        | {
+            "n_disagreements": len(d["disagreements"]),
+            "n_sample_disagreements": len(d["sample_disagreements"]),
+        }
+        for v, d in diff_full.items()
+    }
+    (LAB / "reports" / "audit-tanzil.json").write_text(
+        json.dumps(
+            {
+                "invariants": inv,
+                "revelation": dict(rev),
+                "word_diffs": {k: v for k, v in diffs.items() if k != "first"},
+                "header_words": n_header,
+                "words": n_words,
+                "differential": slim,
+            },
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+            default=list,
+        ),
+        encoding="utf-8",
+    )
     (LAB / "reports" / "audit-tanzil.md").write_text("\n".join(out) + "\n", encoding="utf-8")
     print("écrit : reports/audit-tanzil.md")
     bad = [

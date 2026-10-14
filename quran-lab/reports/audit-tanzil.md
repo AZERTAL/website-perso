@@ -1,7 +1,7 @@
 ---
 generated_by: cd quran-lab && uv run python scripts/build_db.py && uv run python scripts/audit_tanzil.py
 data_manifest_sha256: 6b8d4d7d4f226b38179f9cb62e57bbbcf0d1d83adc4220d90cc1833d61f4095a
-code_sha: 9bf95076c423-dirty
+code_sha: e6ca9e59777b
 ---
 # Audit des sources Tanzil
 

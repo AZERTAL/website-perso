@@ -39,3 +39,7 @@ src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# Le script contient des paragraphes de prose de la page ; la longueur de ligne n'y est pas un enjeu.
+"scripts/build_status_page.py" = ["E501"]

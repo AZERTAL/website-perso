@@ -1,0 +1,319 @@
+<title>Quran Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : une colonne éditoriale étroite, une échelle de mesure en tête (la question testée),
+   puis des preuves. Palette : encre neutre à teinte froide + feuille d'or (enluminure) en accent unique. */
+:root {
+  --bg: #F6F7F9; --surface: #FFFFFF; --surface-2: #EDF0F4; --fg: #0E1116; --muted: #566070;
+  --line: #DEE3EA; --accent: #86671D; --accent-soft: #F0E6CB;
+  --ok: #17705B; --warn: #9A5B00; --pend: #667386;
+  --shadow: 0 1px 0 rgba(14,17,22,.04), 0 12px 32px -16px rgba(14,17,22,.18);
+  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ar: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A0C10; --surface: #11141A; --surface-2: #171B23; --fg: #ECEFF4; --muted: #8F99A8;
+    --line: #232832; --accent: #D4B061; --accent-soft: #2A2415;
+    --ok: #5CCBA8; --warn: #E3A24A; --pend: #7A8699;
+    --shadow: 0 1px 0 rgba(255,255,255,.03), 0 18px 40px -20px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A0C10; --surface: #11141A; --surface-2: #171B23; --fg: #ECEFF4; --muted: #8F99A8;
+  --line: #232832; --accent: #D4B061; --accent-soft: #2A2415;
+  --ok: #5CCBA8; --warn: #E3A24A; --pend: #7A8699;
+  --shadow: 0 1px 0 rgba(255,255,255,.03), 0 18px 40px -20px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+  padding-inline: 20px; padding-block: 0 96px; margin: 0; }
+a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1040px; margin-inline: auto; }
+h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; }
+p { margin: 0; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+
+/* barre */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; margin-inline: -20px; padding: 14px 20px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -.01em; }
+.brand i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: block; }
+.bar nav { display: flex; gap: 20px; font-size: 14px; color: var(--muted); }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--fg); }
+@media (max-width: 640px) { .bar nav { display: none; } }
+
+/* héro */
+.hero { padding-block: 72px 56px; }
+.pillrow { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--surface);
+  border-radius: 999px; padding: 6px 12px; font: 500 12px/1 var(--mono); color: var(--muted); text-decoration: none; }
+.pill b { width: 7px; height: 7px; border-radius: 50%; background: var(--warn); display: block; }
+.pill.ok b { background: var(--ok); }
+.hero h1 { font-size: clamp(38px, 6.4vw, 76px); font-weight: 600; letter-spacing: -0.045em; max-width: 20ch; }
+.hero h1 span { color: var(--muted); display: block; }
+.lede { margin-top: 24px; max-width: 58ch; font-size: clamp(17px, 2.1vw, 20px); color: var(--muted); line-height: 1.55; }
+.lede strong { color: var(--fg); font-weight: 500; }
+
+/* échelle de mesure */
+.scale { margin-top: 56px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  padding: 28px 24px 22px; box-shadow: var(--shadow); }
+.scale-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 8px; }
+.scale-head h2 { font-size: 20px; letter-spacing: -.02em; }
+.scale-word { font-family: var(--ar); font-size: 44px; line-height: 1; color: var(--accent); direction: rtl; }
+.scale svg { width: 100%; height: auto; display: block; overflow: visible; }
+.scale .ax { stroke: var(--line); stroke-width: 1; fill: none; }
+.scale .tick { stroke: var(--line); stroke-width: 1; fill: none; }
+.scale .tl { fill: var(--muted); font: 400 11px var(--mono); }
+.scale .dot { fill: var(--accent); }
+.scale .dot2 { fill: var(--fg); }
+.scale .ghost { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.scale .lab { fill: var(--fg); font: 600 15px var(--sans); }
+.scale .sub { fill: var(--muted); font: 400 11px var(--mono); }
+.scale-foot { margin-top: 14px; font-size: 14px; color: var(--muted); max-width: 70ch; }
+.scale-foot strong { color: var(--fg); font-weight: 500; }
+
+/* sections */
+section { padding-block: 64px 0; }
+section > .eyebrow { margin-bottom: 14px; display: block; }
+section > h2 { font-size: clamp(28px, 4vw, 40px); max-width: 22ch; }
+section > p.intro { margin-top: 16px; max-width: 62ch; color: var(--muted); }
+
+/* chiffres */
+.stats { margin-top: 32px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.stat { background: var(--surface); padding: 20px 20px 18px; min-width: 0; }
+@media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .stat .n { font-size: 28px; } }
+.stat .n { font: 500 34px/1.05 var(--mono); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.stat .l { margin-top: 8px; font-size: 14px; color: var(--fg); }
+.stat .s { margin-top: 6px; font: 400 11px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+
+/* grille de règles */
+.grid-card { margin-top: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: var(--shadow); }
+.lvl { display: grid; grid-template-columns: 76px 1fr; gap: 16px; align-items: center; padding-block: 10px; }
+.lvl + .lvl { border-top: 1px solid var(--line); }
+.lvl .name { font: 500 12px var(--mono); color: var(--muted); }
+.cells { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.cell { width: 22px; height: 22px; border-radius: 6px; border: 0; padding: 0; cursor: pointer; background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent); }
+.cell.b { background: var(--accent); box-shadow: none; }
+.cell.na { cursor: default; box-shadow: inset 0 0 0 1px var(--line);
+  background: repeating-linear-gradient(135deg, transparent 0 4px, var(--line) 4px 5px); }
+.cell:hover:not(.na), .cell:focus-visible, .cell[aria-pressed="true"] { transform: scale(1.18); outline-offset: 2px; }
+.readout { margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: var(--surface-2); font: 400 13px/1.55 var(--mono); min-height: 74px; }
+.readout b { font-weight: 500; color: var(--fg); }
+.legend { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 14px; height: 14px; border-radius: 4px; display: block; }
+.forms { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; }
+.form { display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.form .ar { font-family: var(--ar); font-size: 22px; direction: rtl; line-height: 1.3; }
+.form .c { font: 500 12px var(--mono); color: var(--muted); }
+.form.cmp { border-color: var(--accent); }
+
+/* découvertes */
+.finds { margin-top: 32px; display: grid; gap: 14px; }
+.find { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.find .k { font: 500 12px var(--mono); color: var(--accent); padding-top: 4px; }
+.find h3 { font-size: 19px; letter-spacing: -.015em; }
+.find p { margin-top: 8px; color: var(--muted); font-size: 15px; max-width: 66ch; }
+.find p b { color: var(--fg); font-weight: 500; }
+@media (max-width: 560px) { .find { grid-template-columns: 1fr; gap: 6px; } }
+
+/* sources et phases */
+.rows { margin-top: 28px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--surface); }
+.row { display: grid; grid-template-columns: 1.2fr 2fr auto; gap: 16px; align-items: center; padding: 16px 20px; }
+.row + .row { border-top: 1px solid var(--line); }
+.row .t { font-weight: 500; }
+.row .d { color: var(--muted); font-size: 14px; min-width: 0; overflow-wrap: anywhere; }
+.chip { font: 500 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px;
+  border: 1px solid currentColor; white-space: nowrap; }
+.chip.ok { color: var(--ok); } .chip.warn { color: var(--warn); } .chip.pend { color: var(--pend); } .chip.now { color: var(--accent); }
+@media (max-width: 680px) { .row { grid-template-columns: 1fr; gap: 6px; } .row .chip { justify-self: start; } }
+
+.ask { margin-top: 28px; padding: 24px; border-radius: 18px; border: 1px solid var(--accent); background: var(--accent-soft); }
+.ask h3 { font-size: 20px; }
+.ask p { margin-top: 10px; max-width: 64ch; font-size: 15px; }
+.ask p + p { color: var(--muted); }
+
+footer { margin-top: 80px; padding-top: 28px; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: 13px; color: var(--muted); }
+footer p { max-width: 80ch; }
+@media (prefers-reduced-motion: no-preference) { .cell { transition: transform .12s ease; } }
+</style>
+
+<div class="bar"><div class="wrap">
+  <div class="brand"><i></i>Quran Lab</div>
+  <nav><a href="#mesure">Mesure</a><a href="#regles">Règles</a><a href="#decouvertes">Découvertes</a><a href="#sources">Sources</a><a href="#phases">Phases</a></nav>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <div class="pillrow">
+      <span class="pill"><b></b><span id="phase">Phase 1 · en cours</span></span>
+      <span class="pill ok"><b></b><span id="tests"></span></span>
+      <a class="pill" id="commit" target="_blank" rel="noopener"></a>
+    </div>
+    <h1>Compter le texte. <span>Séparer le signal du hasard.</span></h1>
+    <p class="lede">Un laboratoire reproductible pour étudier le Coran à partir des sources : chaque chiffre sort d'un script, chaque affirmation populaire est testée <strong>sous toutes les règles de comptage</strong> avant qu'on la croie.</p>
+
+    <div class="scale" id="mesure">
+      <div class="scale-head">
+        <h2>« Le mot jour apparaît 365 fois »</h2>
+        <span class="scale-word" lang="ar">يوم</span>
+      </div>
+      <svg id="line" viewBox="0 0 640 140" role="img" aria-labelledby="line-t line-d"></svg>
+      <p class="scale-foot" id="scale-foot"></p>
+    </div>
+  </header>
+
+  <section id="regles">
+    <span class="eyebrow">Hypothèse H001 · pré-enregistrée avant tout comptage</span>
+    <h2>Soixante règles, vingt-quatre mesurées</h2>
+    <p class="intro">Un même mot donne plusieurs chiffres selon la façon de compter. On évalue donc chaque combinaison de règles, et on refuse de choisir celle qui arrange. Les cases hachurées attendent la morphologie : ce sont des inconnues, pas des zéros.</p>
+    <div class="grid-card">
+      <div id="levels"></div>
+      <div class="readout" id="readout" aria-live="polite">Survole ou sélectionne une case pour voir sa règle.</div>
+      <div class="legend">
+        <span><i style="background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)"></i>composés séparés</span>
+        <span><i style="background:var(--accent)"></i>composés inclus (ex. <span dir="rtl" lang="ar">يومئذ</span>)</span>
+        <span><i style="background:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px);box-shadow:inset 0 0 0 1px var(--line)"></i>non évalué</span>
+      </div>
+    </div>
+    <p class="intro" style="margin-top:28px" id="forms-intro"></p>
+    <div class="forms" id="forms"></div>
+  </section>
+
+  <section id="chiffres">
+    <span class="eyebrow">Audit du texte Tanzil · FAIT</span>
+    <h2>Ce que contiennent vraiment les fichiers</h2>
+    <p class="intro">Chaque valeur est calculée par <span class="mono">scripts/audit_tanzil.py</span> sur les fichiers téléchargés, puis comparée aux métadonnées officielles.</p>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="decouvertes">
+    <span class="eyebrow">Ce que les vraies données ont corrigé</span>
+    <h2>Le texte réel a contredit le code</h2>
+    <p class="intro">Ces erreurs ont été trouvées en lançant le code sur les vrais fichiers, pas en le relisant. Chacune est consignée dans <span class="mono">DECISIONS.md</span>.</p>
+    <div class="finds" id="finds"></div>
+  </section>
+
+  <section id="sources">
+    <span class="eyebrow">Provenance</span>
+    <h2>Sources et licences</h2>
+    <div class="rows" id="sources-rows"></div>
+    <div class="ask" id="ask">
+      <h3>Décision en attente</h3>
+      <p>La page de téléchargement de la morphologie (Quranic Arabic Corpus v0.4) demande une adresse e-mail de contact. Je ne la saisis pas à ta place sans ton accord explicite.</p>
+      <p>Deux voies : tu m'autorises à utiliser ton adresse sur ce formulaire, ou tu télécharges le fichier toi-même et tu le déposes dans le dossier des sources brutes. Sans lui, les niveaux radical, lemme et racine restent non évalués.</p>
+    </div>
+  </section>
+
+  <section id="phases">
+    <span class="eyebrow">Feuille de route</span>
+    <h2>Huit phases, une porte de sortie chacune</h2>
+    <div class="rows" id="phases-rows"></div>
+  </section>
+
+  <footer>
+    <p>Texte : Tanzil Project, version 1.1, licence <a href="https://tanzil.net/docs/Text_License" target="_blank" rel="noopener">CC BY 3.0</a>, copie verbatim. Source : <a href="https://tanzil.net" target="_blank" rel="noopener">tanzil.net</a>. Morphologie : Quranic Arabic Corpus, GNU GPL, <a href="https://corpus.quran.com" target="_blank" rel="noopener">corpus.quran.com</a> (non encore acquise).</p>
+    <p>Limites : lecture Hafs ʿan ʿĀṣim et numérotation de cette tradition ; les décomptes ne se transposent pas aux autres lectures. Aucune conclusion religieuse n'est tirée de ces chiffres.</p>
+    <p id="provenance"></p>
+  </footer>
+</main>
+
+<script>
+const D = /*__DATA__*/null;
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => n.toLocaleString("fr-FR").replace(/ /g, " ");
+const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; };
+const NS = "http://www.w3.org/2000/svg";
+const sv = (tag, attrs = {}, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; };
+
+/* en-tête */
+$("tests").textContent = fmt(D.tests) + " tests verts";
+const c = $("commit"); c.textContent = D.commit; c.href = "https://github.com/AZERTAL/website-perso/commit/" + D.commit_full;
+
+/* échelle de mesure : un axe, une échelle (0 à 400), redessinée à la largeur réelle de l'écran */
+const svg = $("line");
+const MAX = 400;
+function drawScale() {
+  const W = Math.max(280, Math.round(svg.parentElement.clientWidth - 48));
+  const compact = W < 560, W0 = 16, W1 = W - 16, X = (v) => W0 + (v / MAX) * (W1 - W0);
+  svg.replaceChildren();
+  const ay = compact ? 104 : 88;
+  svg.setAttribute("viewBox", `0 0 ${W} ${ay + 54}`);
+  svg.appendChild(sv("title", { id: "line-t" }, "Décomptes du mot يوم comparés à la valeur annoncée"));
+  svg.appendChild(sv("desc", { id: "line-d" }, `Décomptes mesurés : ${D.h001.sep} et ${D.h001.with}. Valeur annoncée : ${D.h001.target}.`));
+  svg.appendChild(sv("line", { class: "ax", x1: W0, x2: W1, y1: ay, y2: ay }));
+  const step = compact ? 100 : 50;
+  for (let v = 0; v <= MAX; v += step) {
+    svg.appendChild(sv("line", { class: "tick", x1: X(v), x2: X(v), y1: ay - 6, y2: ay + 6 }));
+    svg.appendChild(sv("text", { class: "tl", x: X(v), y: ay + 28, "text-anchor": v === 0 ? "start" : v === MAX ? "end" : "middle" }, String(v)));
+  }
+  const mark = (v, cls, label, sub, anchor) => {
+    svg.appendChild(sv("circle", { class: cls, cx: X(v), cy: ay, r: cls === "ghost" ? 9 : 7 }));
+    const dx = anchor === "end" ? -12 : anchor === "start" ? 12 : 0;
+    // format étroit : le repère annoncé monte d'une rangée pour ne pas chevaucher les deux mesures
+    const [y1, y2] = compact ? (cls === "ghost" ? [16, 32] : [60, 76]) : [44, 62];
+    svg.appendChild(sv("text", { class: "lab", x: X(v) + dx, y: y1, "text-anchor": anchor || "middle" }, label));
+    svg.appendChild(sv("text", { class: "sub", x: X(v) + dx, y: y2, "text-anchor": anchor || "middle" }, sub));
+  };
+  mark(D.h001.sep, "dot", String(D.h001.sep), compact ? "séparés" : `composés séparés · ${D.h001.n_sep} cellules`, "end");
+  mark(D.h001.with, "dot2", String(D.h001.with), compact ? "inclus" : `inclus · ${D.h001.n_with} cellules`, "start");
+  mark(D.h001.target, "ghost", String(D.h001.target), compact ? "annoncé" : "affirmation", "middle");
+}
+drawScale();
+new ResizeObserver(drawScale).observe(svg.parentElement);
+$("scale-foot").innerHTML = `Niveau « forme », texte Tanzil, ${D.h001.n_sep} cellules chacun : <strong>${D.h001.sep}</strong> occurrences du mot seul (composés séparés), <strong>${D.h001.with}</strong> avec les composés (comme <span dir="rtl" lang="ar">يومئذ</span>). <strong>${D.h001.target} n'apparaît dans aucune des ${D.h001.n_eval} cellules évaluées.</strong> Verdict partiel : lemme et racine, qui donneraient des totaux plus grands, ne sont pas encore mesurables.`;
+
+/* grille de règles */
+const lv = $("levels"), ro = $("readout");
+const names = { form: "forme", stem: "radical", lemma: "lemme", root: "racine" };
+const cmpTxt = { separate: "composés séparés", with_base: "composés inclus" };
+const bsm = { all_113: "113 basmalas", numbered_only: "basmala 1:1 seule", none: "sans basmala" };
+for (const level of ["form", "stem", "lemma", "root"]) {
+  const row = el("div", { class: "lvl" }); row.appendChild(el("div", { class: "name" }, names[level]));
+  const cells = el("div", { class: "cells", role: "group", "aria-label": "Cellules du niveau " + names[level] });
+  D.cells.filter((x) => x.level === level).forEach((x) => {
+    const b = el("button", { type: "button", class: "cell" + (x.count == null ? " na" : x.compounds === "with_base" ? " b" : ""),
+      "aria-label": `${names[level]}, ${bsm[x.basmala]}, muqatta'at ${x.muqattaat === "include" ? "incluses" : "exclues"}, ${x.text || "texte n/a"}, ${cmpTxt[x.compounds]} : ${x.count == null ? "non évalué" : x.count}` });
+    const show = () => {
+      ro.innerHTML = `<b>${names[level]}</b> · ${bsm[x.basmala]} · muqatta'at ${x.muqattaat === "include" ? "incluses" : "exclues"} · texte ${x.text || "n/a"} · ${cmpTxt[x.compounds]}<br>` +
+        (x.count == null ? "<b>non évalué</b> : morphologie absente (ce n'est pas un zéro)" : `décompte <b>${x.count}</b> · cible ${D.h001.target} ${x.count === D.h001.target ? "atteinte" : "non atteinte"}`);
+    };
+    b.addEventListener("mouseenter", show); b.addEventListener("focus", show); b.addEventListener("click", show);
+    cells.appendChild(b);
+  });
+  row.appendChild(cells); lv.appendChild(row);
+}
+$("forms-intro").textContent = `Ce que « يوم » recouvre au niveau forme (texte Uthmani, tout inclus) : ${D.forms.total} occurrences réparties sur ${D.forms.distinct} graphies. Les composés (cadre doré) sont ajoutés seulement quand la règle le demande.`;
+const fw = $("forms");
+D.forms.top.forEach((f) => { const s = el("span", { class: "form" + (f.compound ? " cmp" : "") }); s.appendChild(el("span", { class: "ar", lang: "ar" }, f.form)); s.appendChild(el("span", { class: "c" }, String(f.n))); fw.appendChild(s); });
+if (D.forms.rest) fw.appendChild(el("span", { class: "form" }, D.forms.rest === 1 ? "+ 1 autre graphie" : `+ ${D.forms.rest} autres graphies`));
+
+/* chiffres */
+const st = $("stats");
+D.stats.forEach((s) => { const d = el("div", { class: "stat" }); d.appendChild(el("div", { class: "n" }, fmt(s.n))); d.appendChild(el("div", { class: "l" }, s.l)); d.appendChild(el("div", { class: "s" }, s.s)); st.appendChild(d); });
+
+/* découvertes */
+const fd = $("finds");
+D.finds.forEach((f) => { const d = el("div", { class: "find" }); d.appendChild(el("div", { class: "k" }, f.k)); const b = el("div"); b.appendChild(el("h3", {}, f.t)); const p = el("p"); p.innerHTML = f.p; b.appendChild(p); d.appendChild(b); fd.appendChild(d); });
+
+/* sources et phases */
+const mk = (host, rows) => rows.forEach((r) => { const d = el("div", { class: "row" }); d.appendChild(el("div", { class: "t" }, r.t)); const m = el("div", { class: "d" }); m.innerHTML = r.d; d.appendChild(m); d.appendChild(el("span", { class: "chip " + r.cls }, r.chip)); host.appendChild(d); });
+mk($("sources-rows"), D.sources); mk($("phases-rows"), D.phases);
+$("provenance").textContent = `Page générée par quran-lab/scripts/build_status_page.py au commit ${D.commit}. Les chiffres viennent de reports/audit-tanzil.json et de la base construite à partir des fichiers Tanzil ; seuls les éléments marqués « manuel » ne sortent pas d'un script.`;
+</script>
