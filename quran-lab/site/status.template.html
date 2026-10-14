@@ -124,6 +124,21 @@ section > p.intro { margin-top: 16px; max-width: 62ch; color: var(--muted); }
 .form .c { font: 500 12px var(--mono); color: var(--muted); }
 .form.cmp { border-color: var(--accent); }
 
+/* voisins : N(T) */
+.bars { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px 20px 18px; box-shadow: var(--shadow); }
+.barchart { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; align-items: end; height: 150px; }
+.barchart .col { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 0; }
+.barchart .b { background: var(--line); border-radius: 3px 3px 0 0; min-height: 2px; }
+.barchart .b.nb { background: var(--pend); }
+.barchart .b.tg { background: var(--accent); }
+.barchart .v { font: 500 10px var(--mono); text-align: center; color: var(--muted); height: 14px; }
+.barchart .col.tgc .v { color: var(--accent); }
+.barlabels { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 6px; }
+.barlabels span { font: 400 10px var(--mono); color: var(--muted); text-align: center; overflow: hidden; }
+.bars-foot { margin-top: 14px; font-size: 14px; color: var(--muted); max-width: 70ch; }
+.bars-foot strong { color: var(--fg); font-weight: 500; }
+@media (max-width: 560px) { .barchart .v { font-size: 8px; } .barlabels span { font-size: 8px; } }
+
 /* découvertes */
 .finds { margin-top: 32px; display: grid; gap: 14px; }
 .find { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
@@ -156,7 +171,7 @@ footer p { max-width: 80ch; }
 
 <div class="bar"><div class="wrap">
   <div class="brand"><i></i>Quran Lab</div>
-  <nav><a href="#mesure">Mesure</a><a href="#regles">Règles</a><a href="#decouvertes">Découvertes</a><a href="#sources">Sources</a><a href="#phases">Phases</a></nav>
+  <nav><a href="#mesure">Mesure</a><a href="#regles">Règles</a><a href="#voisins">Voisins</a><a href="#decouvertes">Découvertes</a><a href="#sources">Sources</a><a href="#phases">Phases</a></nav>
 </div></div>
 
 <main class="wrap">
@@ -194,6 +209,17 @@ footer p { max-width: 80ch; }
     </div>
     <p class="intro" style="margin-top:28px" id="forms-intro"></p>
     <div class="forms" id="forms"></div>
+  </section>
+
+  <section id="voisins">
+    <span class="eyebrow">Hypothèse H001-v2 · post hoc, déclarée comme telle</span>
+    <h2>365 est-il plus facile à atteindre que ses voisins ?</h2>
+    <p class="intro">Le niveau « forme » ne voit pas les formes précédées d'une conjonction, d'une préposition ou de l'article. On balaie donc toutes les façons de décider quelles formes comptent, et on regarde combien de règles donnent exactement chaque total.</p>
+    <div class="bars">
+      <div class="barchart" id="barchart" role="img" aria-label="Nombre de règles donnant chaque total entre 350 et 380"></div>
+      <div class="barlabels" id="barlabels"></div>
+      <p class="bars-foot" id="bars-foot"></p>
+    </div>
   </section>
 
   <section id="chiffres">
@@ -303,6 +329,21 @@ $("forms-intro").textContent = `Ce que « يوم » recouvre au niveau forme (te
 const fw = $("forms");
 D.forms.top.forEach((f) => { const s = el("span", { class: "form" + (f.compound ? " cmp" : "") }); s.appendChild(el("span", { class: "ar", lang: "ar" }, f.form)); s.appendChild(el("span", { class: "c" }, String(f.n))); fw.appendChild(s); });
 if (D.forms.rest) fw.appendChild(el("span", { class: "form" }, D.forms.rest === 1 ? "+ 1 autre graphie" : `+ ${D.forms.rest} autres graphies`));
+
+/* voisins : N(T) pour T de 350 à 380 */
+(function () {
+  const H = D.h2, ts = []; for (let t = H.range[0]; t <= H.range[1]; t++) ts.push(t);
+  const mx = Math.max(...ts.map((t) => H.n[t]), 1), bc = $("barchart"), bl = $("barlabels");
+  bc.style.setProperty("--n", ts.length); bl.style.setProperty("--n", ts.length);
+  ts.forEach((t) => {
+    const col = el("div", { class: "col" + (t === H.target ? " tgc" : "") });
+    col.appendChild(el("div", { class: "v" }, String(H.n[t])));
+    col.appendChild(el("div", { class: "b" + (t === H.target ? " tg" : t >= 360 && t <= 370 ? " nb" : ""), style: `height:${(H.n[t] / mx) * 120}px` }));
+    bc.appendChild(col);
+    bl.appendChild(el("span", {}, t % 5 === 0 ? String(t) : ""));
+  });
+  $("bars-foot").innerHTML = `Sur ${H.specs} règles (${H.distinct} totaux distincts), <strong>${H.target}</strong> est atteint par <strong>${H.n_target}</strong>. Le meilleur voisin entre 360 et 370 l'est par <strong>${H.max_neighbour}</strong>. Lecture fixée avant le calcul : <strong>${H.verdict}</strong>. La règle qui donne ${H.target} (${H.reviewer_total}) a été trouvée en regardant le résultat ; elle ne prouve rien seule.`;
+})();
 
 /* chiffres */
 const st = $("stats");

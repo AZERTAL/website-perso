@@ -11,13 +11,17 @@ import json
 import re
 import subprocess
 import sys
+from collections import Counter
 from pathlib import Path
 
 LAB = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LAB / "src"))
 from quran_lab.db import read_corpus  # noqa: E402
 from quran_lab.multiverse import run  # noqa: E402
+from quran_lab.normalize import skeleton  # noqa: E402
 from quran_lab.rules import grid, load_config  # noqa: E402
+from quran_lab.stats.ledger import total_comparisons  # noqa: E402
+from quran_lab.stats.spec_space import TOGGLES, analyze, verdict  # noqa: E402
 
 TARGET = 365
 QUERY = "يوم"
@@ -94,6 +98,26 @@ def main() -> int:
         "rest": len(items) - len(top),
     }
 
+    tokens = {
+        v: Counter(skeleton(w.text) for w in corpus.words if w.variant == v)
+        for v in ("simple", "uthmani")
+    }
+    sp = analyze(tokens)
+    reviewer_mask = tuple(t in ("T1", "T2", "T3", "T4") for t in TOGGLES)
+    nb = [sp.n_of(t) for t in range(360, 371) if t != TARGET]
+    h2 = {
+        "range": [350, 380],
+        "target": TARGET,
+        "n": {t: sp.n_of(t) for t in range(350, 381)},
+        "verdict": verdict(sp),
+        "specs": len(sp.totals),
+        "distinct": sp.distinct_totals,
+        "n_target": sp.n_of(TARGET),
+        "max_neighbour": max(nb),
+        "reviewer_total": sp.totals[("simple", reviewer_mask)],
+    }
+    ledger_total = total_comparisons(LAB / "reports" / "tests_ledger.csv")
+
     inv = audit["invariants"]["uthmani"]
     w, hw, wd, df = (
         audit["words"],
@@ -126,6 +150,26 @@ def main() -> int:
             "n": len(cells),
             "l": "règles de comptage par requête, dont " + str(len(ev)) + " évaluées",
             "s": "FAIT · rules.grid(), cellules n/a exclues",
+        },
+        {
+            "n": ledger_total,
+            "l": "comparaisons déclarées au registre des tests",
+            "s": "FAIT · reports/tests_ledger.csv, ajout seul",
+        },
+        {
+            "n": h2["specs"],
+            "l": "spécifications de formes balayées (H001-v2)",
+            "s": f"FAIT · dont {h2['distinct']} décomptes distincts",
+        },
+        {
+            "n": h2["n_target"],
+            "l": f"spécifications qui donnent exactement {TARGET}",
+            "s": f"FAIT · le voisin le mieux placé en a {h2['max_neighbour']}",
+        },
+        {
+            "n": df["simple"]["types_a"],
+            "l": "mots distincts (squelettes) en simple-clean",
+            "s": "FAIT · reports/audit-tanzil.json",
         },
         {
             "n": 10,
@@ -162,6 +206,18 @@ def main() -> int:
         },
     ]
 
+    finds.insert(
+        3,
+        {
+            "k": "D15",
+            "t": "Un relecteur indépendant a rendu le verdict FRAGILE",
+            "p": f"Sans connaître notre raisonnement, il a trouvé qu'une combinaison de formes du mot donne exactement <b>{h2['reviewer_total']}</b> "
+            "(arithmétique re-vérifiée). Mais cette règle a été trouvée <b>après</b> avoir vu le résultat. Réponse : une nouvelle hypothèse "
+            f"pré-enregistrée (H001-v2) balaie {h2['specs']} règles. Résultat : {TARGET} est atteint par <b>{h2['n_target']}</b> d'entre elles, "
+            f"mais son voisin le mieux placé l'est par <b>{h2['max_neighbour']}</b> : {TARGET} n'est pas plus facile à atteindre que ses voisins. "
+            "Huit faiblesses relevées, traitement point par point dans DECISIONS D15. <i>(verdict de la relecture : manuel, rapport d'agent)</i>",
+        },
+    )
     manifest = json.loads((LAB / "data" / "sources_manifest.json").read_text(encoding="utf-8"))
     names = {
         "tanzil_uthmani": "Tanzil · Uthmani",
@@ -215,6 +271,7 @@ def main() -> int:
         "cells": cells,
         "forms": forms,
         "stats": stats,
+        "h2": h2,
         "finds": finds,
         "sources": sources,
         "phases": phases,
