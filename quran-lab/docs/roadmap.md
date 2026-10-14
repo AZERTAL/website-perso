@@ -74,6 +74,7 @@ Chaque exigence du cahier des charges, son état réel et l'endroit où elle vit
 | Exigence | État |
 |---|---|
 | Lexique des concepts (`themes.yaml`) | brouillon non validé |
+| Recherche de passages par domaine (temps, espace, business, apprentissage, intelligence) | **faite** : [programme de recherche](research-program.md) ; minorants, requêtes pré-enregistrées |
 | Analyses par concept (fréquence, répartition, co-occurrences, graphe) | non fait |
 | Modélisation de thèmes, embeddings | non fait ([05](methodology/05-ai-methods.md)) |
 | Thèmes « scientifiques » avec lectures étiquetées | non fait |

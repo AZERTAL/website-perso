@@ -6,6 +6,8 @@ Une hypothèse = un fichier. Elle est **commitée avant** tout résultat qui la 
 |---|---|---|
 | `TEMPLATE.md` | gabarit | — |
 | `H001.md` | « le mot jour (`يوم`) apparaît 365 fois », grille de règles | résultat partiel (niveau forme) |
+| `H002.md` | « le mot `عقل` n'apparaît que sous forme verbale » (filtre de candidats contigu) | 49 formes verbales, aucune nominale ; limite du filtre repérée ensuite |
+| `H002-v2.md` | même affirmation, filtre de candidats élargi : essai de **réfutation** | mêmes 49 formes, aucune nominale, aucun faux positif : `DÉPEND DE LA RÈGLE` |
 | `H001-v2.md` | même affirmation, espace de 512 spécifications ; **post hoc**, déclarée comme telle | `DÉPEND DE LA RÈGLE` : 365 atteint, pas plus que ses voisins |
 
 Pour modifier un test après avoir vu un résultat : créer `Hxxx-v2`. L'original reste visible, intact.

@@ -1,3 +1,5 @@
 test_id,date,hypothesis,family,n_comparisons,statistic,p_raw,p_adjusted,status
 H001,2026-10-14,H001,F-nombres,1,cible 365 : 0 cellule sur 24 évaluées (niveau forme),n/a,n/a,PARTIEL
 H001-v2,2026-10-14,H001-v2,F-nombres,1,N(365)=5 contre max N(voisins 360-370)=8 sur 512 spécifications,n/a,n/a,DÉPEND DE LA RÈGLE
+H002,2026-10-14,H002,F-existence,1,formes nominales : 0 ; non classées : 0,n/a,n/a,DÉPEND DE LA RÈGLE
+H002-v2,2026-10-14,H002-v2,F-existence,1,formes nominales : 0 ; non classées : 0,n/a,n/a,DÉPEND DE LA RÈGLE

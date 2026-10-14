@@ -60,10 +60,12 @@ fiche de concept : racines et lemmes, répartition par sourate, co-occurrences, 
 
 | Domaine | Recherche de passages | Motifs statistiques | Lectures (tafsir) |
 |---|---|---|---|
-| Temps | requêtes écrites | planifié | non acquis |
-| Espace | requêtes écrites | planifié | non acquis |
-| Business | requêtes écrites | planifié | non acquis |
-| Apprentissage | requêtes écrites | planifié | non acquis |
-| Intelligence | requêtes écrites ; **H002** (formes de `عقل`) pré-enregistrée | planifié | non acquis |
+| Temps | **exécutée** : [`reports/passages/temps.md`](../reports/passages/temps.md) | planifié | non acquis |
+| Espace | **exécutée** : [`espace.md`](../reports/passages/espace.md) | planifié | non acquis |
+| Business | **exécutée** : [`business.md`](../reports/passages/business.md) | planifié | non acquis |
+| Apprentissage | **exécutée** : [`apprentissage.md`](../reports/passages/apprentissage.md) | planifié | non acquis |
+| Intelligence | **exécutée** : [`intelligence.md`](../reports/passages/intelligence.md) ; **H002 et H002-v2** (formes de `عقل`) : [`H002-v2`](../reports/H002-v2-aql-candidats-elargis.md) | planifié | non acquis |
+
+**Minorant, pas liste exhaustive.** Un passage dont l'expression est écrite autrement (préfixe non prévu, suffixe, variante orthographique) n'est pas trouvé. La première règle d'appariement (v1) a manqué 22:47 et 5 passages de `أولي الألباب` ; la règle v2 les trouve, et les deux sont rapportées côte à côte (voir [DECISIONS D16](DECISIONS.md)).
 
 Le détail du plan par phase est dans la [feuille de route](roadmap.md).

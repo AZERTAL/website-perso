@@ -139,6 +139,19 @@ section > p.intro { margin-top: 16px; max-width: 62ch; color: var(--muted); }
 .bars-foot strong { color: var(--fg); font-weight: 500; }
 @media (max-width: 560px) { .barchart .v { font-size: 8px; } .barlabels span { font-size: 8px; } }
 
+/* domaines */
+.doms { margin-top: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.dom { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; min-width: 0; }
+.dom h3 { font-size: 18px; letter-spacing: -.015em; }
+.dom .meta { margin-top: 6px; font: 400 12px/1.5 var(--mono); color: var(--muted); }
+.dom ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 10px; }
+.dom li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: baseline; padding-top: 10px; border-top: 1px solid var(--line); }
+.dom .ex { font-family: var(--ar); font-size: 20px; direction: rtl; text-align: right; line-height: 1.4; }
+.dom .n { font: 500 13px var(--mono); }
+.dom .refs { grid-column: 1 / -1; font: 400 11px/1.5 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.callout { margin-top: 20px; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-2); font-size: 14px; max-width: 78ch; }
+.callout b { font-weight: 500; }
+
 /* découvertes */
 .finds { margin-top: 32px; display: grid; gap: 14px; }
 .find { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
@@ -171,7 +184,7 @@ footer p { max-width: 80ch; }
 
 <div class="bar"><div class="wrap">
   <div class="brand"><i></i>Quran Lab</div>
-  <nav><a href="#mesure">Mesure</a><a href="#regles">Règles</a><a href="#voisins">Voisins</a><a href="#decouvertes">Découvertes</a><a href="#sources">Sources</a><a href="#phases">Phases</a></nav>
+  <nav><a href="#mesure">Mesure</a><a href="#regles">Règles</a><a href="#voisins">Voisins</a><a href="#domaines">Domaines</a><a href="#decouvertes">Découvertes</a><a href="#sources">Sources</a><a href="#phases">Phases</a></nav>
 </div></div>
 
 <main class="wrap">
@@ -220,6 +233,14 @@ footer p { max-width: 80ch; }
       <div class="barlabels" id="barlabels"></div>
       <p class="bars-foot" id="bars-foot"></p>
     </div>
+  </section>
+
+  <section id="domaines">
+    <span class="eyebrow">Programme de recherche · cartographie, pas interprétation</span>
+    <h2>Temps, espace, business, apprentissage, intelligence</h2>
+    <p class="intro">Pour chaque domaine, des requêtes fixées <b>avant</b> de regarder le texte. Le tableau donne ce qui existe vraiment dans le texte Tanzil ; aucune lecture de tafsir n'est incluse. Une recherche de passages ne prouve aucun motif : il faudra un modèle nul.</p>
+    <div class="doms" id="doms"></div>
+    <div class="callout" id="h002box"></div>
   </section>
 
   <section id="chiffres">
@@ -343,6 +364,29 @@ if (D.forms.rest) fw.appendChild(el("span", { class: "form" }, D.forms.rest === 
     bl.appendChild(el("span", {}, t % 5 === 0 ? String(t) : ""));
   });
   $("bars-foot").innerHTML = `Sur ${H.specs} règles (${H.distinct} totaux distincts), <strong>${H.target}</strong> est atteint par <strong>${H.n_target}</strong>. Le meilleur voisin entre 360 et 370 l'est par <strong>${H.max_neighbour}</strong>. Lecture fixée avant le calcul : <strong>${H.verdict}</strong>. La règle qui donne ${H.target} (${H.reviewer_total}) a été trouvée en regardant le résultat ; elle ne prouve rien seule.`;
+})();
+
+/* domaines */
+(function () {
+  const host = $("doms");
+  D.domains.forEach((d) => {
+    const c = el("div", { class: "dom" });
+    c.appendChild(el("h3", {}, d.title));
+    const m = el("div", { class: "meta" });
+    m.textContent = `${d.n_queries} requêtes · ${d.n_found} trouvées dans le texte` + (d.n_v1_missed ? ` · règle stricte : ${d.n_v1_missed} passages manqués` : "");
+    c.appendChild(m);
+    const ul = el("ul");
+    d.items.forEach((it) => {
+      const li = el("li");
+      li.appendChild(el("span", { class: "ex", lang: "ar" }, it.text));
+      li.appendChild(el("span", { class: "n" }, it.n + (it.n_v1 !== it.n ? ` (stricte : ${it.n_v1})` : "")));
+      li.appendChild(el("span", { class: "refs" }, it.refs.join(", ") + (it.more ? ` … +${it.more}` : "")));
+      ul.appendChild(li);
+    });
+    c.appendChild(ul); host.appendChild(c);
+  });
+  const H = D.h002, a = H.counts.simple, forms = H.forms.map((f) => `${f[0]} (${f[1]})`).join(", ");
+  $("h002box").innerHTML = `<b>H002 · intelligence.</b> Affirmation populaire : « la racine <span dir="rtl" lang="ar">عقل</span> n'apparaît que sous forme verbale ». Pré-enregistrée, puis testée avec un filtre de candidats volontairement large (essai de réfutation, H002-v2). Résultat : <b>${a.verbal}</b> formes verbales, <b>${a.nominal}</b> nominale, <b>${a.autre}</b> non classée (${forms}). Verdict : ${H.verdict}. Approximation de la morphologie à confirmer avec le corpus morphologique.`;
 })();
 
 /* chiffres */

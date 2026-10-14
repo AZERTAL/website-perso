@@ -1,0 +1,197 @@
+[
+ {
+  "id": "business-01",
+  "kind": "word",
+  "text": "تجارة",
+  "occurrences": 8,
+  "verses": [
+   "2:282",
+   "4:29",
+   "9:24",
+   "24:37",
+   "35:29",
+   "61:10",
+   "62:11"
+  ],
+  "occurrences_v1": 8
+ },
+ {
+  "id": "business-02",
+  "kind": "phrase",
+  "text": "تجارة عن تراض",
+  "occurrences": 1,
+  "verses": [
+   "4:29"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-03",
+  "kind": "word",
+  "text": "البيع",
+  "occurrences": 3,
+  "verses": [
+   "2:275",
+   "62:9"
+  ],
+  "occurrences_v1": 3
+ },
+ {
+  "id": "business-04",
+  "kind": "phrase",
+  "text": "أحل الله البيع",
+  "occurrences": 1,
+  "verses": [
+   "2:275"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-05",
+  "kind": "word",
+  "text": "الربا",
+  "occurrences": 7,
+  "verses": [
+   "2:275",
+   "2:276",
+   "2:278",
+   "3:130",
+   "4:161"
+  ],
+  "occurrences_v1": 7
+ },
+ {
+  "id": "business-06",
+  "kind": "phrase",
+  "text": "وحرم الربا",
+  "occurrences": 1,
+  "verses": [
+   "2:275"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-07",
+  "kind": "word",
+  "text": "الكيل",
+  "occurrences": 7,
+  "verses": [
+   "6:152",
+   "7:85",
+   "12:59",
+   "12:63",
+   "12:88",
+   "17:35",
+   "26:181"
+  ],
+  "occurrences_v1": 7
+ },
+ {
+  "id": "business-08",
+  "kind": "phrase",
+  "text": "أوفوا الكيل",
+  "occurrences": 4,
+  "verses": [
+   "6:152",
+   "7:85",
+   "17:35",
+   "26:181"
+  ],
+  "occurrences_v1": 4
+ },
+ {
+  "id": "business-09",
+  "kind": "word",
+  "text": "الميزان",
+  "occurrences": 9,
+  "verses": [
+   "6:152",
+   "7:85",
+   "11:84",
+   "11:85",
+   "42:17",
+   "55:7",
+   "55:8",
+   "55:9",
+   "57:25"
+  ],
+  "occurrences_v1": 9
+ },
+ {
+  "id": "business-10",
+  "kind": "phrase",
+  "text": "تداينتم بدين",
+  "occurrences": 1,
+  "verses": [
+   "2:282"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-11",
+  "kind": "word",
+  "text": "فاكتبوه",
+  "occurrences": 1,
+  "verses": [
+   "2:282"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-12",
+  "kind": "word",
+  "text": "الرزاق",
+  "occurrences": 1,
+  "verses": [
+   "51:58"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-13",
+  "kind": "phrase",
+  "text": "أموالكم بينكم بالباطل",
+  "occurrences": 2,
+  "verses": [
+   "2:188",
+   "4:29"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "business-14",
+  "kind": "word",
+  "text": "للمطففين",
+  "occurrences": 1,
+  "verses": [
+   "83:1"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "business-15",
+  "kind": "word",
+  "text": "اشتروا",
+  "occurrences": 7,
+  "verses": [
+   "2:16",
+   "2:86",
+   "2:90",
+   "2:175",
+   "3:177",
+   "3:187",
+   "9:9"
+  ],
+  "occurrences_v1": 7
+ },
+ {
+  "id": "business-16",
+  "kind": "phrase",
+  "text": "ربحت تجارتهم",
+  "occurrences": 1,
+  "verses": [
+   "2:16"
+  ],
+  "occurrences_v1": 1
+ }
+]

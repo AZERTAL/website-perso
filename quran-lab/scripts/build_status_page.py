@@ -14,6 +14,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+import yaml
+
 LAB = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LAB / "src"))
 from quran_lab.db import read_corpus  # noqa: E402
@@ -116,6 +118,33 @@ def main() -> int:
         "max_neighbour": max(nb),
         "reviewer_total": sp.totals[("simple", reviewer_mask)],
     }
+    domains = []
+    for jf in sorted((LAB / "reports" / "passages").glob("*.json")):
+        qs = json.loads(jf.read_text(encoding="utf-8"))
+        meta = yaml.safe_load(
+            (LAB / "config" / "queries" / f"{jf.stem}.yaml").read_text(encoding="utf-8")
+        )
+        phrases = [q for q in qs if q["kind"] == "phrase" and q["occurrences"]][:5]
+        domains.append(
+            {
+                "id": jf.stem,
+                "title": meta["title"],
+                "n_queries": len(qs),
+                "n_found": sum(1 for q in qs if q["occurrences"]),
+                "n_v1_missed": sum(q["occurrences"] - q["occurrences_v1"] for q in qs),
+                "items": [
+                    {
+                        "text": q["text"],
+                        "n": q["occurrences"],
+                        "n_v1": q["occurrences_v1"],
+                        "refs": q["verses"][:6],
+                        "more": max(0, len(q["verses"]) - 6),
+                    }
+                    for q in phrases
+                ],
+            }
+        )
+    h002 = json.loads((LAB / "reports" / "H002-v2.json").read_text(encoding="utf-8"))
     ledger_total = total_comparisons(LAB / "reports" / "tests_ledger.csv")
 
     inv = audit["invariants"]["uthmani"]
@@ -272,6 +301,8 @@ def main() -> int:
         "forms": forms,
         "stats": stats,
         "h2": h2,
+        "domains": domains,
+        "h002": h002,
         "finds": finds,
         "sources": sources,
         "phases": phases,

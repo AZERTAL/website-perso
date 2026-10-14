@@ -35,6 +35,7 @@ Index. Chaque page dit ce qui est **implémenté**, ce qui est **planifié**, et
 | Page | Contenu |
 |---|---|
 | [Reproductibilité](reproducibility.md) | comment regénérer chaque résultat et le vérifier |
+| [Programme de recherche par domaines](research-program.md) | temps, espace, business, apprentissage, intelligence : questions, méthode, limites, état |
 | [Feuille de route et traçabilité](roadmap.md) | chaque exigence du cahier des charges, son état, où elle vit |
 | [Décisions](DECISIONS.md) | journal daté : décision, raison, application |
 | [Plans](plans/) | plans de phase |

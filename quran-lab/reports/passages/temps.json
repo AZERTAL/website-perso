@@ -1,0 +1,195 @@
+[
+ {
+  "id": "temps-01",
+  "kind": "phrase",
+  "text": "ألف سنة",
+  "occurrences": 5,
+  "verses": [
+   "2:96",
+   "22:47",
+   "29:14",
+   "32:5",
+   "70:4"
+  ],
+  "occurrences_v1": 4
+ },
+ {
+  "id": "temps-02",
+  "kind": "phrase",
+  "text": "خمسين ألف سنة",
+  "occurrences": 1,
+  "verses": [
+   "70:4"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "temps-03",
+  "kind": "word",
+  "text": "مقداره",
+  "occurrences": 2,
+  "verses": [
+   "32:5",
+   "70:4"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "temps-04",
+  "kind": "word",
+  "text": "لبثتم",
+  "occurrences": 8,
+  "verses": [
+   "17:52",
+   "18:19",
+   "20:103",
+   "20:104",
+   "23:112",
+   "23:114",
+   "30:56"
+  ],
+  "occurrences_v1": 8
+ },
+ {
+  "id": "temps-05",
+  "kind": "word",
+  "text": "لبثوا",
+  "occurrences": 5,
+  "verses": [
+   "18:12",
+   "18:25",
+   "18:26",
+   "30:55",
+   "34:14"
+  ],
+  "occurrences_v1": 5
+ },
+ {
+  "id": "temps-06",
+  "kind": "phrase",
+  "text": "يوما أو بعض يوم",
+  "occurrences": 3,
+  "verses": [
+   "2:259",
+   "18:19",
+   "23:113"
+  ],
+  "occurrences_v1": 3
+ },
+ {
+  "id": "temps-07",
+  "kind": "phrase",
+  "text": "مائة عام",
+  "occurrences": 2,
+  "verses": [
+   "2:259"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "temps-08",
+  "kind": "word",
+  "text": "وازدادوا",
+  "occurrences": 1,
+  "verses": [
+   "18:25"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "temps-09",
+  "kind": "word",
+  "text": "الدهر",
+  "occurrences": 2,
+  "verses": [
+   "45:24",
+   "76:1"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "temps-10",
+  "kind": "word",
+  "text": "الساعة",
+  "occurrences": 39,
+  "verses": [
+   "6:31",
+   "6:40",
+   "7:187",
+   "12:107",
+   "15:85",
+   "16:77",
+   "18:21",
+   "18:36",
+   "19:75",
+   "20:15",
+   "21:49",
+   "22:1",
+   "22:7",
+   "22:55",
+   "25:11",
+   "30:12",
+   "30:14",
+   "30:55",
+   "31:34",
+   "33:63",
+   "34:3",
+   "40:46",
+   "40:59",
+   "41:47",
+   "41:50",
+   "42:17",
+   "42:18",
+   "43:66",
+   "43:85",
+   "45:27",
+   "45:32",
+   "47:18",
+   "54:1",
+   "54:46",
+   "79:42"
+  ],
+  "occurrences_v1": 39
+ },
+ {
+  "id": "temps-11",
+  "kind": "word",
+  "text": "سنين",
+  "occurrences": 12,
+  "verses": [
+   "7:130",
+   "10:5",
+   "12:42",
+   "12:47",
+   "17:12",
+   "18:11",
+   "18:25",
+   "20:40",
+   "23:112",
+   "26:18",
+   "26:205",
+   "30:4"
+  ],
+  "occurrences_v1": 12
+ },
+ {
+  "id": "temps-12",
+  "kind": "word",
+  "text": "والعصر",
+  "occurrences": 1,
+  "verses": [
+   "103:1"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "temps-13",
+  "kind": "word",
+  "text": "أمد",
+  "occurrences": 1,
+  "verses": [
+   "57:16"
+  ],
+  "occurrences_v1": 1
+ }
+]

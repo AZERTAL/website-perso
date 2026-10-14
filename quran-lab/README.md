@@ -21,6 +21,7 @@ Un même mot donne plusieurs chiffres selon la façon de compter (forme exacte, 
 | Moteur de comptage à 4 niveaux, grille de 60 règles | implémenté et testé ; seul le niveau « forme » est évaluable sans morphologie |
 | Audit du texte réel | fait : [`reports/audit-tanzil.md`](reports/audit-tanzil.md) |
 | Hypothèse H001 (« jour = 365 ») | niveau forme mesuré, **verdict partiel** : [`reports/H001-yawm-365.md`](reports/H001-yawm-365.md) |
+| Recherche de passages (temps, espace, business, apprentissage, intelligence) | faite ; H002 (formes de `عقل`) : voir [`docs/research-program.md`](docs/research-program.md) |
 | Modèles nuls N0 à N4, correction multiple, registre des tests | voir [`docs/roadmap.md`](docs/roadmap.md) |
 | Embeddings, thèmes, réseau, cycles | planifiés (Phases 4 à 6), non implémentés |
 | Tafsir | aucune source acquise |
@@ -53,6 +54,7 @@ quran-lab/
 ├── Makefile               commandes courantes (test, lint, db, ...)
 ├── pyproject.toml         dépendances et configuration (uv, pytest, ruff)
 ├── config/                règles et lexiques en YAML (données de configuration, pas des résultats)
+│   ├── queries/               requêtes par domaine (commitées avant exécution)
 │   ├── counting_rules.yaml    versets de muqatta'at, mots composés
 │   ├── sources.yaml           URL et options de téléchargement
 │   └── themes.yaml            lexiques de concepts (BROUILLON non validé)

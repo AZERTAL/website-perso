@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from collections import Counter
@@ -103,6 +104,18 @@ def main() -> int:
     ]
     (LAB / "reports" / "H002-v2-aql-candidats-elargis.md").write_text(
         "\n".join(out), encoding="utf-8"
+    )
+    (LAB / "reports" / "H002-v2.json").write_text(
+        json.dumps(
+            {
+                "verdict": verdict,
+                "counts": n,
+                "forms": [[f, k] for f, k in res["simple"][0]["verbal"].most_common()],
+            },
+            ensure_ascii=False,
+            indent=1,
+        ),
+        encoding="utf-8",
     )
     print("écrit : reports/H002-v2-aql-candidats-elargis.md |", verdict)
     ledger = LAB / "reports" / "tests_ledger.csv"

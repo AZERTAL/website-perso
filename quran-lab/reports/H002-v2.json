@@ -1,0 +1,37 @@
+{
+ "verdict": "REPRODUIT sur ce périmètre",
+ "counts": {
+  "simple": {
+   "verbal": 49,
+   "nominal": 0,
+   "autre": 0
+  },
+  "uthmani": {
+   "verbal": 49,
+   "nominal": 0,
+   "autre": 0
+  }
+ },
+ "forms": [
+  [
+   "تعقلون",
+   24
+  ],
+  [
+   "يعقلون",
+   22
+  ],
+  [
+   "عقلوه",
+   1
+  ],
+  [
+   "يعقلها",
+   1
+  ],
+  [
+   "نعقل",
+   1
+  ]
+ ]
+}

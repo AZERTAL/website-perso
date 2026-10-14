@@ -1,0 +1,206 @@
+[
+ {
+  "id": "espace-01",
+  "kind": "word",
+  "text": "أسرى",
+  "occurrences": 3,
+  "verses": [
+   "8:67",
+   "8:70",
+   "17:1"
+  ],
+  "occurrences_v1": 3
+ },
+ {
+  "id": "espace-02",
+  "kind": "phrase",
+  "text": "بعبده ليلا",
+  "occurrences": 1,
+  "verses": [
+   "17:1"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-03",
+  "kind": "word",
+  "text": "المعارج",
+  "occurrences": 1,
+  "verses": [
+   "70:3"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-04",
+  "kind": "word",
+  "text": "تعرج",
+  "occurrences": 1,
+  "verses": [
+   "70:4"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-05",
+  "kind": "word",
+  "text": "يعرج",
+  "occurrences": 3,
+  "verses": [
+   "32:5",
+   "34:2",
+   "57:4"
+  ],
+  "occurrences_v1": 3
+ },
+ {
+  "id": "espace-06",
+  "kind": "word",
+  "text": "أقطار",
+  "occurrences": 1,
+  "verses": [
+   "55:33"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-07",
+  "kind": "word",
+  "text": "تنفذوا",
+  "occurrences": 1,
+  "verses": [
+   "55:33"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-08",
+  "kind": "word",
+  "text": "فانفذوا",
+  "occurrences": 1,
+  "verses": [
+   "55:33"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-09",
+  "kind": "word",
+  "text": "بسلطان",
+  "occurrences": 8,
+  "verses": [
+   "14:10",
+   "14:11",
+   "18:15",
+   "27:21",
+   "44:19",
+   "51:38",
+   "52:38",
+   "55:33"
+  ],
+  "occurrences_v1": 8
+ },
+ {
+  "id": "espace-10",
+  "kind": "phrase",
+  "text": "سبع سماوات",
+  "occurrences": 5,
+  "verses": [
+   "2:29",
+   "41:12",
+   "65:12",
+   "67:3",
+   "71:15"
+  ],
+  "occurrences_v1": 5
+ },
+ {
+  "id": "espace-11",
+  "kind": "phrase",
+  "text": "سبع سموات",
+  "occurrences": 0,
+  "verses": [],
+  "occurrences_v1": 0
+ },
+ {
+  "id": "espace-12",
+  "kind": "word",
+  "text": "طباقا",
+  "occurrences": 2,
+  "verses": [
+   "67:3",
+   "71:15"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "espace-13",
+  "kind": "phrase",
+  "text": "السماء الدنيا",
+  "occurrences": 3,
+  "verses": [
+   "37:6",
+   "41:12",
+   "67:5"
+  ],
+  "occurrences_v1": 3
+ },
+ {
+  "id": "espace-14",
+  "kind": "phrase",
+  "text": "سيروا في الأرض",
+  "occurrences": 6,
+  "verses": [
+   "3:137",
+   "6:11",
+   "16:36",
+   "27:69",
+   "29:20",
+   "30:42"
+  ],
+  "occurrences_v1": 6
+ },
+ {
+  "id": "espace-15",
+  "kind": "phrase",
+  "text": "ضربتم في الأرض",
+  "occurrences": 2,
+  "verses": [
+   "4:101",
+   "5:106"
+  ],
+  "occurrences_v1": 2
+ },
+ {
+  "id": "espace-16",
+  "kind": "phrase",
+  "text": "مغرب الشمس",
+  "occurrences": 1,
+  "verses": [
+   "18:86"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-17",
+  "kind": "phrase",
+  "text": "مطلع الشمس",
+  "occurrences": 1,
+  "verses": [
+   "18:90"
+  ],
+  "occurrences_v1": 1
+ },
+ {
+  "id": "espace-18",
+  "kind": "word",
+  "text": "القرنين",
+  "occurrences": 3,
+  "verses": [
+   "18:83",
+   "18:86",
+   "18:94"
+  ],
+  "occurrences_v1": 3
+ }
+]
