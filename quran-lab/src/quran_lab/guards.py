@@ -20,8 +20,15 @@ _MUTATING = re.compile(
 
 def _is_raw_path(file_path: str, cwd: str) -> bool:
     p = file_path if os.path.isabs(file_path) else os.path.join(cwd, file_path)
-    p = os.path.normpath(p)
-    return f"/{RAW}/" in p + "/" or p.endswith(f"/{RAW}")
+    q = os.path.normpath(p) + "/"
+    if f"/{RAW}/" in q:
+        return True
+    # Projet extrait à la racine d'un dépôt dédié : le dossier est reconnu à la présence de
+    # scripts/fetch_sources.py dans le dossier parent de data/raw.
+    if "/data/raw/" in q:
+        root = q.split("/data/raw/")[0]
+        return os.path.exists(os.path.join(root, "scripts", "fetch_sources.py"))
+    return False
 
 
 def decide(payload: dict) -> str | None:

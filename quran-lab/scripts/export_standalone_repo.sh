@@ -18,8 +18,32 @@ cd "$DEST"
 git filter-repo --force \
   --path quran-lab/ --path .claude/ --path .github/ --path .githooks/ --path CLAUDE.md --path .gitignore \
   --path-rename quran-lab/:
-# adapte les chemins qui supposaient quran-lab/ à la racine
-sed -i 's#quran-lab/##g' CLAUDE.md .githooks/pre-commit .claude/settings.json 2>/dev/null || true
-sed -i '/working-directory: quran-lab/,+0d; /defaults:/,/working-directory/d; s#quran-lab/\*\*#**#g' .github/workflows/quran-lab-ci.yml 2>/dev/null || true
+# adapte à la racine : chemins des hooks et de la configuration
+sed -i 's#quran-lab/##g' CLAUDE.md .claude/settings.json
+cat > .githooks/pre-commit <<'HOOK'
+#!/bin/sh
+# Activer avec : make hooks
+python3 scripts/check_reports.py || exit 1
+HOOK
+chmod +x .githooks/pre-commit
+sed -i 's#make hooks)#make hooks)#' README.md
+cat > .github/workflows/quran-lab-ci.yml <<'CI'
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # check_reports lit l'historique git
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest -q
+      - run: python3 scripts/check_reports.py
+CI
+git add -A && git -c user.name=export -c user.email=export@localhost commit -qm "Adaptation des chemins pour un dépôt dédié"
 echo "Dépôt extrait dans $DEST. Relire CLAUDE.md, .claude/settings.json et la CI, lancer 'make test', puis :"
 echo "  git remote add origin <url> && git push -u origin main"

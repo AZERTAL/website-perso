@@ -57,3 +57,17 @@ def test_is_commit():
     assert is_commit(w("Bash", command="git add -A && git commit -m x"))
     assert not is_commit(w("Bash", command="git status"))
     assert not is_commit(w("Write", file_path="a"))
+
+
+def test_standalone_layout_is_recognised_by_the_fetch_script(tmp_path):
+    proj, other = tmp_path / "proj", tmp_path / "other"
+    (proj / "scripts").mkdir(parents=True)
+    (proj / "scripts" / "fetch_sources.py").write_text("")
+    payload = {
+        "tool_name": "Write",
+        "tool_input": {"file_path": str(proj / "data/raw/x")},
+        "cwd": str(proj),
+    }
+    assert decide(payload)
+    payload["tool_input"]["file_path"] = str(other / "data/raw/x")
+    assert decide(payload) is None  # un autre dossier « data/raw » n'est pas protégé
