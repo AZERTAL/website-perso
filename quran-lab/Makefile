@@ -1,4 +1,4 @@
-.PHONY: all sync test lint fmt fetch db hooks reports audit h001 h001-v2 dataset site verify-sources help
+.PHONY: all sync test lint fmt fetch db hooks reports audit h001 h001-v2 h002 passages dataset site verify-sources help
 UV ?= uv
 
 all: lint test db reports
@@ -38,6 +38,12 @@ h001: db  ## H001 : grille de règles niveau forme (exige un arbre git propre)
 
 h001-v2: db  ## H001-v2 : espace de 512 spécifications
 	$(UV) run python scripts/run_h001_v2.py
+
+h002: db  ## H002 : formes de la séquence عقل
+	$(UV) run python scripts/run_h002.py
+
+passages: db  ## recherche de passages par domaine (config/queries/*.yaml, commités avant)
+	$(UV) run python scripts/run_passages.py
 
 dataset: db  ## export CSV et Parquet dans data/processed/
 	$(UV) run python scripts/export_dataset.py
