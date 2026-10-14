@@ -39,8 +39,9 @@ h001: db  ## H001 : grille de règles niveau forme (exige un arbre git propre)
 h001-v2: db  ## H001-v2 : espace de 512 spécifications
 	$(UV) run python scripts/run_h001_v2.py
 
-h002: db  ## H002 : formes de la séquence عقل
+h002: db  ## H002 et H002-v2 : formes de la racine عقل
 	$(UV) run python scripts/run_h002.py
+	$(UV) run python scripts/run_h002_v2.py
 
 passages: db  ## recherche de passages par domaine (config/queries/*.yaml, commités avant)
 	$(UV) run python scripts/run_passages.py

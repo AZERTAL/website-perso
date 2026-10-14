@@ -76,14 +76,14 @@ def main() -> int:
         "<!-- END generated -->",
     ]
     for v in res:
-        classes, other = res[v]
+        classes, rest = res[v]
         out += [
             "",
             f"## Formes rencontrées ({v})",
             "<!-- BEGIN generated:quran_lab.stats.form_classes.forms -->",
         ]
         rows = [(c, f, k) for c, forms in classes.items() for f, k in forms.most_common()]
-        rows += [("autre", f, k) for f, k in other.most_common()]
+        rows += [("autre", f, k) for f, k in rest.most_common()]
         out += [
             table(["classe", "forme (squelette)", "occurrences"], rows) if rows else "aucune forme",
             "<!-- END generated -->",

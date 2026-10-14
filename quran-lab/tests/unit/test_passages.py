@@ -112,3 +112,19 @@ def test_classify_lists_unclassified_candidates_and_first_class_wins():
     assert out["nominal"] == Counter({"العقل": 2})
     assert other == Counter({"معقلا": 3})  # listé, jamais ignoré
     assert "يسمعون" not in other  # pas un candidat
+
+
+def test_classify_accepts_a_candidate_predicate_for_infix_letters():
+    import re as _re
+
+    toks = Counter({"عاقل": 2, "تعقلون": 4, "عقول": 1, "علم": 9})
+    cand = _re.compile(r"ع.{0,2}ق.{0,2}ل")
+    classes = {
+        "verbal": _re.compile(r"[يتن]عقل(ون)?"),
+        "nominal": _re.compile(r"(عاقل|عقول)"),
+    }
+    out, other = classify(toks, lambda t: bool(cand.search(t)), classes)
+    # le filtre contigu `عقل` aurait manqué « عاقل » et « عقول » : zéro nominal par artefact
+    assert out["nominal"] == Counter({"عاقل": 2, "عقول": 1})
+    assert out["verbal"] == Counter({"تعقلون": 4}) and not other
+    assert sum(classify(toks, "عقل", classes)[0]["nominal"].values()) == 0
