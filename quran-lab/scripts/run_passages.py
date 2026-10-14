@@ -36,7 +36,8 @@ def main() -> int:
     cmd = "cd quran-lab && uv run python scripts/run_passages.py"
     for path in sorted((LAB / "config" / "queries").glob("*.yaml")):
         domain, title, queries = load_queries(path)
-        results = [search(q, vt) for q in queries]
+        results = [search(q, vt, "v2") for q in queries]
+        results_v1 = {q.id: search(q, vt, "v1") for q in queries}
         md = [
             f"---\ngenerated_by: {cmd}\ndata_manifest_sha256: {raw}\ncode_sha: {sha}\n---",
             f"# Domaine : {title}",
@@ -50,14 +51,33 @@ def main() -> int:
             "",
             "## Vue d'ensemble",
             "<!-- BEGIN generated:quran_lab.passages.search -->",
-            "| id | type | expression | occurrences | versets | sourates |",
-            "|---|---|---|---:|---:|---:|",
+            "| id | type | expression | occurrences v1 | occurrences v2 | versets v2 | sourates v2 |",
+            "|---|---|---|---:|---:|---:|---:|",
         ]
         for r in results:
             q = r.query
             md.append(
-                f"| {q.id} | {q.kind} | {q.text} | {r.n_occurrences} | {len(r.verses)} | {r.n_suras} |"
+                f"| {q.id} | {q.kind} | {q.text} | {results_v1[q.id].n_occurrences} | "
+                f"{r.n_occurrences} | {len(r.verses)} | {r.n_suras} |"
             )
+        diff = [(r, set(r.verses) - set(results_v1[r.query.id].verses)) for r in results]
+        diff = [(r, extra) for r, extra in diff if extra]
+        md += [
+            "<!-- END generated -->",
+            "",
+            "## Ce que la règle v1 manquait",
+            "La règle v1 (pré-enregistrée) n'accepte que `و` ou `ف` devant le premier mot d'une "
+            "expression ; la règle v2 accepte aussi `ب`, `ل`, `ك` (DECISIONS D16).",
+            "<!-- BEGIN generated:quran_lab.passages.search -->",
+        ]
+        md += (
+            ["aucune différence entre v1 et v2 pour ce domaine"]
+            if not diff
+            else [
+                f"{r.query.id} ({r.query.text}) : versets ajoutés par v2 : {', '.join(sorted(extra))}"
+                for r, extra in diff
+            ]
+        )
         md += ["<!-- END generated -->", "", "## Détail par requête"]
         for r in results:
             q = r.query
@@ -85,6 +105,7 @@ def main() -> int:
                         "text": r.query.text,
                         "occurrences": r.n_occurrences,
                         "verses": r.verses,
+                        "occurrences_v1": results_v1[r.query.id].n_occurrences,
                     }
                     for r in results
                 ],

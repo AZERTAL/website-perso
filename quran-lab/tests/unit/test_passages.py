@@ -128,3 +128,13 @@ def test_classify_accepts_a_candidate_predicate_for_infix_letters():
     assert out["nominal"] == Counter({"عاقل": 2, "عقول": 1})
     assert out["verbal"] == Counter({"تعقلون": 4}) and not other
     assert sum(classify(toks, "عقل", classes)[0]["nominal"].values()) == 0
+
+
+def test_rule_v2_finds_a_phrase_whose_first_word_carries_a_preposition():
+    verses = {(22, 47): "وإن يوما عند ربك كألف سنة مما تعدون", (32, 5): "كان مقداره ألف سنة مما"}
+    v = verse_tokens(corpus_of(verses))
+    qq = Query("t", "phrase", "ألف سنة", "")
+    assert [h.ref for h in search(qq, v, "v1").hits] == ["32:5"]  # v1 manque 22:47
+    assert [h.ref for h in search(qq, v, "v2").hits] == ["22:47", "32:5"]
+    with pytest.raises(ValueError):
+        search(qq, v, "v3")

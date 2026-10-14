@@ -99,14 +99,21 @@ def _word_re(word: str) -> re.Pattern[str]:
     return re.compile(f"{_CLITICS}{re.escape(word)}")
 
 
-def search(query: Query, vt: dict[VerseKey, list[str]]) -> QueryResult:
+def search(query: Query, vt: dict[VerseKey, list[str]], rule: str = "v2") -> QueryResult:
+    """rule "v1" : le premier mot d'une expression ne porte que `و` ou `ف` (règle pré-enregistrée).
+    rule "v2" : il peut aussi porter `ب`, `ل` ou `ك` (ajoutée après avoir constaté que v1 manque
+    `كألف سنة`, voir DECISIONS D16). Les deux sont rapportées côte à côte.
+    """
+    if rule not in ("v1", "v2"):
+        raise ValueError(rule)
     words = skeleton(query.text).split()
     if not words:
         raise ValueError(f"requête vide : {query.id}")
     if query.kind == "word":
         pats = [_word_re(words[0])]
     else:
-        pats = [re.compile(f"[وف]?{re.escape(words[0])}")] + [
+        first = "[وف]?" if rule == "v1" else "[وف]?[بلك]?"
+        pats = [re.compile(f"{first}{re.escape(words[0])}")] + [
             re.compile(re.escape(w)) for w in words[1:]
         ]
     hits: list[Hit] = []
